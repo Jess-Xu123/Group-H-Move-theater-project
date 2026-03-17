@@ -3,7 +3,7 @@ name: UI issue
 about: Describe this issue template's purpose here.
 title: ''
 labels: ''
-assignees: JussiPennanen1, Jess-Xu123, AMETZELKH
+assignees: AMETZELKH, Jess-Xu123, JussiPennanen1
 
 ---
 
