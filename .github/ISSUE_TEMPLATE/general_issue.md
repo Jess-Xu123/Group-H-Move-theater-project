@@ -1,6 +1,6 @@
 ---
 name: General Issue
-description: used to report a general issue
+about: used to report a general issue
 title: "[General] "
 labels: ["type: general"]
 ---
