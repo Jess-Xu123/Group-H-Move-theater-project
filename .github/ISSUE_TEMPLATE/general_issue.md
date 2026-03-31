@@ -1,11 +1,17 @@
 ---
+name: General Issue
+description: used to report a general issue
+title: "[General] "
+labels: ["type: general"]
+---
 
 ## Description:
 Define your issue here
 
 ## 📋 
-<!-- Taks to be done -->
+<!-- Tasks to be done -->
 - [ ] 
+
 ---
 
 ## ✅ Acceptance Criteria
