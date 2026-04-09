@@ -33,3 +33,29 @@ app.use('/api', eventRoutes);
 app.listen(PORT, ()=> {
     console.log(`Server is running at http://localhost:${PORT}`);
 });
+
+
+// Movie menu example
+const nowShowingMovies = [
+    { movie_id: 1, title: "Batman", genre: "Action, Drama", category: "now-showing" },
+    { movie_id: 2, title: "Inception", genre: "Sci-Fi, Thriller", category: "now-showing" },
+    { movie_id: 3, title: "Interstellar", genre: "Sci-Fi, Adventure", category: "now-showing" },
+    { movie_id: 4, title: "Spiderman", genre: "Action, Sci-Fi", category: "now-showing" },
+    { movie_id: 5, title: "Harry Potter", genre: "Sci-Fi, Adventure", category: "now-showing" }
+];
+
+const upcomingMovies = [
+    { movie_id: 1, title: "Batman", genre: "Action, Drama", category: "now-showing" },
+    { movie_id: 2, title: "Inception", genre: "Sci-Fi, Thriller", category: "now-showing" },
+    { movie_id: 3, title: "Interstellar", genre: "Sci-Fi, Adventure", category: "now-showing" },
+    { movie_id: 4, title: "Spiderman", genre: "Action, Sci-Fi", category: "now-showing" },
+    { movie_id: 5, title: "Harry Potter", genre: "Sci-Fi, Adventure", category: "now-showing" }
+];
+
+app.get('/api/movies/now-showing', (req, res) => {
+    res.json(nowShowingMovies);
+});
+app.get('/api/movies/upcoming', (req, res) => {
+    res.json(upcomingMovies);
+});
+

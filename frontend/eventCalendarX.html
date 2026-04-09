@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/events.css">
 </head>
 <body class="main-bg text-white">
     
@@ -17,11 +18,13 @@
 <!-- TOP NAV -->
 <nav class="navbar navbar-dark px-3 py-2">
     <div class="container-fluid p-0">
-        <a class="navbar-brand fw-bold" href="#">Logo</a>
+        <a href="homeScreenX.html" class="navbar-brand fw-bold">Logo</a>
    <div class="d-flex align-items-center gap-3">
             <span class="lang-text">EN/FI</span>
             <i class="bi bi-search fs-5"></i>
+            <a href ="loginZ.html" class="text-white">
             <i class="bi bi-person fs-4"></i>
+            </a>
             <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
         </div>
     </div>
@@ -35,10 +38,10 @@
         </div>
         
         <ul class="menu-list">
-            <li><a href="index.html"><i class="bi bi-film"></i> Movies</a></li>
-            <li><a href="#"><i class="bi bi-cup-straw"></i> Snacks and drinks</a></li>
-            <li><a href="#"><i class="bi bi-shop"></i> Online store</a></li>
-            <li><a href="event.html"><i class="bi bi-calendar-event"></i> Events</a></li>
+            <li><a href="movieMenuJ.html"><i class="bi bi-film"></i> Movies</a></li>
+            <li><a href="foodMenuJ.html"><i class="bi bi-cup-straw"></i> Snacks and drinks</a></li>
+            <li><a href="storeZ.html"><i class="bi bi-shop"></i> Online store</a></li>
+            <li><a href="eventScreenX.html"><i class="bi bi-calendar-event"></i> Events</a></li>
             <li><a href="#"><i class="bi bi-people"></i> About us</a></li>
         </ul>
     </div>
@@ -47,70 +50,34 @@
 <div id="menuOverlay" class="menu-overlay"></div>
 
 
-<!-- Birthday Event hero banner -->
-<div class="container my-4">
-    <div class="event-screen-card mb-5">
-        <div class="card-gradient-top birthday-bg">
-            <i class="bi bi-gift-fill promo-icon"></i>
+<!-- EVENT CALENDAR -->
+
+<main class="container my-5">
+        <h1 class="text-center mb-5" style="color: #E3B757;">Event Calendar</h1>
+        
+        <div id="eventList" class="row g-4">
+            <p class="text-center">Loading events...</p>
         </div>
+    </main>
 
-<!-- Birthday Event content -->
-<div class="card-content">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
-                    <h2 class="event-title">Birthday Movies</h2>
-                    <p class="event-subtitle">Celebrate your special day with us!</p>
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="modalEventName">Book Event</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <span class="badge-custom badge-popular">Popular</span>
+                <div class="modal-body">
+                    <input type="email" id="userEmail" class="form-control mb-3" placeholder="Enter your email" required>
+                    <input type="hidden" id="selectedScheduleId">
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmBooking()" style="background: #d43a4d;">Confirm Booking</button>
+                </div>
             </div>
-            
-            <div class="event-info-list mt-3">
-                <p><i class="bi bi-calendar-event"></i> Available every week</p>
-                <p><i class="bi bi-stopwatch"></i> Book 24 hours in advance</p>
-            </div>
-
-            <div class="package-box mt-4">
-                <h6>Package Includes:</h6>
-                <ul>
-                    <li>Complimentary snacks and drinks</li>
-                    <li>Special birthday screen message</li>
-                </ul>
-            </div>
-
-            <button class="btn-event-primary mt-4">
-                <i class="bi bi-ticket-perforated me-2"></i> Book Birthday Event
-            </button>
         </div>
     </div>
-
-<!-- Special Event hero banner -->
-    <div class="event-screen-card">
-        <div class="card-gradient-top special-week-bg">
-            <i class="bi bi-star-fill promo-icon"></i> 
-        </div>
-
-<!-- Birthday Event content -->
-        <div class="card-content">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
-                    <h2 class="event-title">Special Movie Week</h2>
-                    <p class="event-subtitle">Exclusive screenings & premieres</p>
-                </div>
-                <span class="badge-custom badge-limited">Limited</span>
-            </div>
-            
-            <div class="event-info-list mt-3">
-                <p><i class="bi bi-calendar-check"></i> To be Announced</p>
-                <p><i class="bi bi-play-circle"></i> Multiple showtimes daily</p>
-            </div>
-
-            <button class="btn-event-outline mt-5">
-                <i class="bi bi-star me-2"></i> View Schedule
-            </button>
-        </div>
-    </div>
-</div>
-
 
 <!-- FOOTER -->
 <footer class="footer-section mt-1 px-3 pt-4 pb-5">
@@ -147,6 +114,6 @@
     </div>
 </div>
 </footer>
-<script src="app.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

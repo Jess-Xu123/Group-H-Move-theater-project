@@ -4,26 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Movie Details</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/moviedetails.css" />
+  <link rel="stylesheet" href="css/global.css" />
 </head>
-<body>
-  <main class="details-page">
-    <header class="details-topbar">
-      <div class="topbar-left">
-        <span class="logo-text">Logo</span>
-      </div>
 
-      <div class="topbar-right">
-        <a href="#" class="lang-link">EN/FI</a>
-        <button class="icon-btn" type="button" aria-label="Search">⌕</button>
-        <button class="icon-btn" type="button" aria-label="Account">👤</button>
-        <button class="icon-btn" type="button" aria-label="Menu">☰</button>
-      </div>
-    </header>
+<body class="main-bg text-white">
+<!-- TOP NAV -->
+<nav class="navbar navbar-dark px-3 py-2">
+    <div class="container-fluid p-0">
+        <a href="homeScreenX.html" class="navbar-brand fw-bold">Logo</a>
+   <div class="d-flex align-items-center gap-3">
+            <span class="lang-text">EN/FI</span>
+            <i class="bi bi-search fs-5"></i>
+            <a href ="loginZ.html" class="text-white">
+            <i class="bi bi-person fs-4"></i>
+            </a>
+            <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
+        </div>
+    </div>
+</nav>
 
-    <nav class="details-tabs" aria-label="Movie categories">
-      <a href="./moviemenu.html" class="details-tab active">Now Showing</a>
-      <a href="#" class="details-tab">Upcoming</a>
+<!-- SIDE MENU -->
+ <div id="sideMenu" class="side-menu-container">
+    <div class="menu-content">
+        <div class="text-end mb-4">
+            <i class="bi bi-x-lg fs-3 text-white" id="menuClose" style="cursor:pointer;"></i>
+        </div>
+        
+        <ul class="menu-list">
+            <li><a href="movieMenuJ.html"><i class="bi bi-film"></i> Movies</a></li>
+            <li><a href="foodMenuJ.html"><i class="bi bi-cup-straw"></i> Snacks and drinks</a></li>
+            <li><a href="storeZ.html"><i class="bi bi-shop"></i> Online store</a></li>
+            <li><a href="eventScreenX.html"><i class="bi bi-calendar-event"></i> Events</a></li>
+            <li><a href="#"><i class="bi bi-people"></i> About us</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="menuOverlay" class="menu-overlay"></div>
+
+
+<!-- MOVIE DETAILS PAGE -->
+  <main class="movie-page">
+    <nav class="movie-tabs" aria-label="Movie categories">
+      <a href="moviemenuJ.html" class="movie-tab active">Now Showing</a>
+      <a href="upcomingMenuJ.html" class="movie-tab">Upcoming</a>
     </nav>
 
     <section class="details-content" aria-label="Movie details">
@@ -53,55 +80,44 @@
         <a href="#" class="buy-btn">Buy tickets</a>
       </article>
     </section>
-
-    <div class="site-footer-wrap">
-      <footer class="site-footer">
-        <div class="footer-grid">
-          <section class="footer-left" aria-label="Contact us">
-            <h2 class="footer-heading">Contact us</h2>
-            <div class="footer-list">
-              <div class="footer-item">
-                <span class="footer-icon">⌖</span>
-                <span>Kalliotie 6, 90500, Oulu</span>
-              </div>
-              <div class="footer-item">
-                <span class="footer-icon">✆</span>
-                <span>08 5542711</span>
-              </div>
-              <div class="footer-item">
-                <span class="footer-icon">✉</span>
-                <a class="footer-email" href="mailto:booking@elokuvateatteristar.com">booking@elokuvateatteristar.com</a>
-              </div>
-            </div>
-          </section>
-
-          <section class="footer-right" aria-label="Opening hours and social links">
-            <div>
-              <h2 class="footer-heading">Opening hours</h2>
-              <div class="footer-hours">
-                <div class="hours-row">
-                  <span class="hours-day">Monday - Friday</span>
-                  <span class="hours-time">10:00 AM - 11:00 PM</span>
-                </div>
-                <div class="hours-row">
-                  <span class="hours-day">Saturday - Sunday</span>
-                  <span class="hours-time">09:00 AM - 12:00 AM</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h2 class="footer-heading">Follow us</h2>
-              <div class="footer-social-row">
-                <a href="#" class="social-link" aria-label="Facebook">f</a>
-                <a href="#" class="social-link" aria-label="Instagram">◎</a>
-              </div>
-            </div>
-          </section>
-        </div>
-      </footer>
-    </div>
   </main>
+
+    <!-- FOOTER -->
+<footer class="footer-section mt-1 px-3 pt-4 pb-5">
+    <div class="row g-4">
+<!-- Contact us -->
+        <div class="col-sm-6 col-md-5">
+            <h6 class="footer-label">Contact us</h6>
+            <div class="footer-detail mt-3">
+                <p><i class="bi bi-geo-alt-fill me-2"></i>Kalliotie 6, 90500, Oulu</p>
+                    <p><i class="bi bi-telephone-fill me-2"></i>08 5542711</p>
+                    <p><i class="bi bi-envelope-fill me-2"></i>booking@elokuvateatterister.com</p>
+                </div>
+            </div>
+<!-- Opening hours -->
+        <div class="col-sm-6 col-md-7">
+            <h6 class="footer-label"><i class="bi bi-clock-fill me-2"></i>Opening hours</h6>
+            <div class="footer-detail mt-3">
+                <div class="opening-row d-flex justify-content-between mb-2">
+                        <span class="text-muted-custom">Monday - Friday</span>
+                        <span class="time-text">10:00 AM - 11:00 PM</span>
+                    </div>
+                    <div class="opening-row d-flex justify-content-between">
+                        <span class="text-muted-custom">Saturday - Sunday</span>
+                        <span class="time-text">09:00 AM - 12:00 AM</span>
+                    </div>
+                </div>
+<!-- Follow us -->
+            <h6 class="footer-label mt-4">Follow us</h6>
+            <div class="d-flex gap-3 mt-2 social-icons">
+                <i class="bi bi-facebook fs-4"></i>
+                <i class="bi bi-instagram fs-4"></i>
+            </div>
+        </div>
+    </div>
+</div>
+</footer>
+<script src="js/app.js"></script>
 
    <script>
     const params = new URLSearchParams(window.location.search)

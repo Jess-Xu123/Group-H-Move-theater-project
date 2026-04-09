@@ -1,0 +1,118 @@
+.menu-page {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  /* To adjust the content when it is empty */
+  min-height: 80vh;
+}
+
+/* TABS */
+.menu-tabs {
+  display: flex;
+  justify-content: space-around;
+  gap: 14px;
+  padding: 20px;
+  background: #1A1A23;
+  border-bottom: 1px solid #2d2d3a;
+  position: sticky;
+  width: 100%;
+  z-index: 100;
+  margin-top: 40px;
+  border-radius: 12px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.menu-tab {
+  color: #9CA3AF;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.menu-tab.active {
+  color: #E3B757;
+  border-bottom: 2px solid #E3B757;
+}
+
+/* SECTIONS */
+.menu-section {
+  padding: 25px 0 0;
+}
+
+.menu-heading {
+  margin: 0 0 18px;
+  padding: 0 12px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* ITEMS */
+.menu-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  column-gap: 15px;
+  align-items: center;
+  padding: 15px 12px;
+  border-bottom: 1px solid #1a1c2a;
+}
+
+.menu-image {
+  width: 100px;
+  height: 100px;
+  background: #2d2d3a;
+  border-radius: 8px;
+}
+
+.menu-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.menu-desc {
+  margin: 4px 0 8px;
+  font-size: 13px;
+  color: #9CA3AF;
+}
+
+.menu-price {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.add-btn {
+  border: none;
+  border-radius: 20px;
+  background: #D14553;
+  color: #ffffff;
+  line-height: 1;
+  text-transform: lowercase;
+  padding: 4px 12px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.menu-section h2.menu-heading {
+    display: none !important;
+}
+#foodList, #drinksList, #snacksList, #othersList {
+    display: none;
+}
+#foodList {
+    display: block; 
+}
+#foodList:target, 
+#drinksList:target, 
+#snacksList:target, 
+#othersList:target {
+    display: block !important;
+}
+:target:not(#foodList) ~ #foodList {
+    display: none !important;
+}

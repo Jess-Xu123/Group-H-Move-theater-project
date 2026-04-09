@@ -1,0 +1,82 @@
+.event-card-fancy {
+    background: #1A1A23; 
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    height: 100%;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.event-card-fancy:hover {
+    transform: translateY(-8px);
+    border-color: #E3B757; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.event-date {
+    background: #E3B757;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.event-time {
+    color: #ffffff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.event-title {
+    color: #E3B757;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.event-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 15px;
+}
+
+.slots-tag {
+    font-size: 14px;
+    color: #E3B757;
+}
+
+.book-btn {
+    background: #d43a4d;
+    color: white;
+    border: none;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.book-btn-custom:hover:not(:disabled) {
+    background: #ff4d61;
+    box-shadow: 0 0 15px rgba(212, 58, 77, 0.4);
+}
+
+.book-btn-custom:disabled {
+    background: #333;
+    color: #777;
+    cursor: not-allowed;
+}
