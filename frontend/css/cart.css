@@ -1,0 +1,111 @@
+.section-title {
+    color: #E3B757;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.text-gold {
+    color: #E3B757 !important;
+}
+
+/* Shopping cart card */
+.cart-item-card {
+    background: #1A1A23;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    transition: 0.3s;
+}
+
+.cart-item-card:hover {
+    border-color: rgba(227, 183, 87, 0.3);
+    background: #22222B;
+}
+
+.cart-item-card h5 {
+    font-size: 1.1rem; 
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
+}
+
+.price {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #ffffff;
+    min-width: 90px;
+    text-align: right;
+}
+
+.qty-control {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px 12px;
+    border-radius: 50px; 
+}
+
+.qty-control i {
+    font-size: 1.1rem; 
+    cursor: pointer;
+    color: #E3B757;
+    opacity: 0.8;
+}
+
+.qty-control i:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.qty-num {
+    font-size: 1rem;
+    min-width: 25px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.bi-trash3 {
+    font-size: 1.1rem;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+
+.bi-trash3:hover {
+    opacity: 1;
+    color: #ff4d61 !important;
+}
+
+/* Summary Card */
+.summary-card {
+    background: #1A1A23;
+    border: 2px solid #E3B757;
+    border-radius: 12px;
+    position: sticky;
+    top: 20px;
+}
+
+.btn-gold {
+    background: #E3B757;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-gold:hover {
+    background: #f1c40f;
+    box-shadow: 0 0 20px rgba(227, 183, 87, 0.4);
+}
+
+.btn-outline-gold {
+    border: 1px solid #E3B757;
+    color: #E3B757;
+}
+
+.btn-outline-gold:hover {
+    background: #E3B757;
+    color: #000;
+}
+
+.text-muted-custom {
+    color: #9CA3AF;
+    font-size: 0.9rem;
+}

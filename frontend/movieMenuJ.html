@@ -39,7 +39,7 @@
             <li><a href="foodMenuJ.html"><i class="bi bi-cup-straw"></i> Snacks and drinks</a></li>
             <li><a href="storeZ.html"><i class="bi bi-shop"></i> Online store</a></li>
             <li><a href="eventScreenX.html"><i class="bi bi-calendar-event"></i> Events</a></li>
-            <li><a href="#"><i class="bi bi-people"></i> About us</a></li>
+            <li><a href="shoppingCartX.html" class="active"><i class="bi bi-cart3"></i> Shopping cart</a></li>
         </ul>
     </div>
 </div>
@@ -98,39 +98,10 @@
 </div>
 </footer>
 
+<script src="js/app.js"></script>
 
 
-
-
-  <script>
-    // SIDE MENU TOGGLE
-document.addEventListener('DOMContentLoaded', () => {
-    const menu = document.getElementById('sideMenu');
-    const overlay = document.getElementById('menuOverlay');
-    const openBtn = document.getElementById('menuToggle');
-    const closeBtn = document.getElementById('menuClose');
-
-    if (!menu || !overlay || !openBtn || !closeBtn) return;
-
-    // Open menu
-    openBtn.addEventListener('click', () => {
-        menu.classList.add('active');
-        overlay.classList.add('active');
-    });
-
-    // Click X to close
-    closeBtn.addEventListener('click', () => {
-        menu.classList.remove('active');
-        overlay.classList.remove('active');
-    });
-
-    // Click on the background to close
-    overlay.addEventListener('click', () => {
-        menu.classList.remove('active');
-        overlay.classList.remove('active');
-    });
-});
-
+<script>
 // Jussi's Script
 
     const movieGrid = document.getElementById('movieGrid')
