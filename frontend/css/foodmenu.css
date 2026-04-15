@@ -39,9 +39,9 @@
 }
 
 /* SECTIONS */
-.menu-section {
+/* .menu-section {
   padding: 25px 0 0;
-}
+} */
 
 .menu-heading {
   margin: 0 0 18px;
@@ -101,6 +101,29 @@
 .menu-section h2.menu-heading {
     display: none !important;
 }
-#foodList, #drinksList, #snacksList, #othersList {
-    display: block;
+
+/* #foodList {
+    display: block; 
+}
+#foodList:target, 
+#drinksList:target, 
+#snacksList:target, 
+#othersList:target {
+    display: block !important;
+}
+:target:not(#foodList) ~ #foodList {
+    display: none !important;
+} */
+ .menu-section {
+  display: none;
+}
+
+.menu-section.active {
+  display: block;
+  padding: 20px;
+}
+
+.menu-tab.active {
+  font-weight: bold;
+  border-bottom: 2px solid black;
 }
