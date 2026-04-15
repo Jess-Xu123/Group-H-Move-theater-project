@@ -38,7 +38,7 @@
             <li><a href="foodMenuJ.html"><i class="bi bi-cup-straw"></i> Snacks and drinks</a></li>
             <li><a href="storeZ.html"><i class="bi bi-shop"></i> Online store</a></li>
             <li><a href="eventScreenX.html"><i class="bi bi-calendar-event"></i> Events</a></li>
-            <li><a href="shoppingCartX.html" class="active"><i class="bi bi-cart3"></i> Shopping cart</a></li>
+            <li><a href="#"><i class="bi bi-people"></i> About us</a></li>
         </ul>
     </div>
 </div>
@@ -94,47 +94,6 @@
     </div>
 </footer>
 
-<<<<<<< HEAD
 <script src="js/pages.js"></script>
-=======
-<script src="js/app.js"></script>
-
-
-<script>
-// Jussi's Script
-
-    const movieGrid = document.getElementById('movieGrid')
-
-    const renderMovies = (movies) => {
-      movieGrid.innerHTML = movies.map((movie) => `
-      <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
-        <article class="movie-card">
-          <div class="movie-poster"></div>
-          <h2 class="movie-title">${movie.title}</h2>
-          <p class="movie-time">${movie.genre}</p>
-        </article>
-       </a> 
-      `).join('')
-    }
-
-    const loadMovies = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/movies/now-showing')
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch movies')
-        }
-
-        const movies = await response.json()
-        renderMovies(movies)
-      } catch (error) {
-        console.error(error)
-        movieGrid.innerHTML = '<p class="movie-time">Failed to load movies.</p>'
-      }
-    }
-
-    loadMovies()
-  </script>
->>>>>>> 4ad8868c9ba915e766973c8d349ddf42c791a374
 </body>
 </html>
