@@ -50,6 +50,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'group-h-move-theater-project' # 确保这里和你的 Azure App 名字一致
+          app-name: 'Group-H-Move-theater-project'
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }} 
           package: ./backend
