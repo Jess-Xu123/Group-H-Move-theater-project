@@ -19,7 +19,7 @@
    <div class="d-flex align-items-center gap-3">
             <span class="lang-text">EN/FI</span>
             <i class="bi bi-search fs-5"></i>
-            <a href ="loginZ.html" class="text-white">
+            <a href="loginZ.html" class="text-white">
             <i class="bi bi-person fs-4"></i>
             </a>
             <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
@@ -46,7 +46,6 @@
 
 <div id="menuOverlay" class="menu-overlay"></div>
 
-
 <!-- MAIN MENU -->
 <main class="menu-page"> 
     <nav class="menu-tabs" aria-label="Menu categories">
@@ -56,12 +55,10 @@
       <a href="#others" class="menu-tab">Others</a>
     </nav>
 
- 
 <section id="food" class="menu-section">
   <h2 class="menu-heading">Food</h2>
   <div id="foodList"></div>
 </section>
-
 
 <section id="drinks" class="menu-section">
   <h2 class="menu-heading">Drinks</h2>
@@ -79,7 +76,6 @@
 </section>  
 
 </main>
-
 
 <!-- FOOTER -->
 <footer class="footer-section mt-1 px-3 pt-4 pb-5">
@@ -117,112 +113,6 @@
 </div>
 </footer>
 
-
-<script>
-
-// SIDE MENU TOGGLE
-document.addEventListener('DOMContentLoaded', () => {
-    const menu = document.getElementById('sideMenu');
-    const overlay = document.getElementById('menuOverlay');
-    const openBtn = document.getElementById('menuToggle');
-    const closeBtn = document.getElementById('menuClose');
-
-    if (!menu || !overlay || !openBtn || !closeBtn) return;
-
-    // Open menu
-    openBtn.addEventListener('click', () => {
-        menu.classList.add('active');
-        overlay.classList.add('active');
-    });
-
-    // Click X to close
-    closeBtn.addEventListener('click', () => {
-        menu.classList.remove('active');
-        overlay.classList.remove('active');
-    });
-
-    // Click on the background to close
-    overlay.addEventListener('click', () => {
-        menu.classList.remove('active');
-        overlay.classList.remove('active');
-    });
-});
-
-const foodList = document.getElementById('foodList')
-const drinksList = document.getElementById('drinksList')
-const snacksList = document.getElementById('snacksList')
-const othersList = document.getElementById('othersList')
-
-
-
-const formatPrice = (price) => {
-  return `${Number(price).toFixed(2).replace('.', ',')}€`
-}
-
-const createItemHtml = (item) => {
-  return `
-    <article class="menu-item">
-    <div class="menu-image"></div>
-    <div class="menu-info">
-    <h3 class="menu-name">${item.name}</h3>
-    <p class="menu-desc">${item.description}</p>
-    <p class="menu-price">${formatPrice(item.price)}</p>
-    </div>
-    <div class="menu-action">
-    <button class="add-btn" type="button">add</button>
-    </div>
-    </article>`
-}
-
-
-const renderFoods = (items) => {  
-  foodList.innerHTML = ''
-  drinksList.innerHTML = ''
-  snacksList.innerHTML = ''
-  othersList.innerHTML = ''
-
-items.forEach((item) => {
-
-  const html = createItemHtml(item)
-    if (item.category === 'Food') {
-      foodList.innerHTML += html} 
-      else if (item.category === 'Drinks') {
-        drinksList.innerHTML += html} 
-        else if (item.category === 'Snacks') {
-          snacksList.innerHTML += html} 
-          else if (item.category === 'Others') {
-            othersList.innerHTML += html}
-})
-}
-
-const loadFoods = async () => {
-// Display fake data
-  const displayItems = [
-    { name: 'Popcorn', description: 'Large salty popcorn', price: 3.90, category: 'Food' },
-    { name: 'Nachos', description: 'With cheese dip', price: 5.50, category: 'Food' },
-    { name: 'Coca Cola', description: '500ml cold drink', price: 2.50, category: 'Food' },
-    { name: 'Fanta', description: 'Orange flavor', price: 2.50, category: 'Food' }
-  ];
-  renderFoods(displayItems);
-
-    try {
-      const response = await fetch('http://localhost:3000/api/foods')
-        if (!response.ok) {
-          throw new Error('Failed to fetch food items')}
-
-const items = await response.json()
-  renderFoods(items)
-} catch (error) {
-  console.error(error)
-
- // Only for now
- // foodList.innerHTML = '<p class="menu-desc">Failed to load menu items.</p>'
-  
-}
-}
-
-loadFoods()
-
-</script>
+<script src="js/pages.js"></script>
 </body>
 </html>

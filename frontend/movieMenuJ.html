@@ -3,24 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Food Menu</title>
+  <title>Movie Menu</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/movie.css" />
   <link rel="stylesheet" href="css/global.css" />
 </head>
 
-<body class="main-bg text-white"> 
-
+<body class="main-bg text-white">
 <!-- TOP NAV -->
 <nav class="navbar navbar-dark px-3 py-2">
     <div class="container-fluid p-0">
         <a href="homeScreenX.html" class="navbar-brand fw-bold">Logo</a>
-   <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
             <span class="lang-text">EN/FI</span>
             <i class="bi bi-search fs-5"></i>
-            <a href ="loginZ.html" class="text-white">
-            <i class="bi bi-person fs-4"></i>
+            <a href="loginZ.html" class="text-white">
+                <i class="bi bi-person fs-4"></i>
             </a>
             <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
         </div>
@@ -28,12 +27,12 @@
 </nav>
 
 <!-- SIDE MENU -->
- <div id="sideMenu" class="side-menu-container">
+<div id="sideMenu" class="side-menu-container">
     <div class="menu-content">
         <div class="text-end mb-4">
             <i class="bi bi-x-lg fs-3 text-white" id="menuClose" style="cursor:pointer;"></i>
         </div>
-        
+
         <ul class="menu-list">
             <li><a href="movieMenuJ.html"><i class="bi bi-film"></i> Movies</a></li>
             <li><a href="foodMenuJ.html"><i class="bi bi-cup-straw"></i> Snacks and drinks</a></li>
@@ -46,48 +45,46 @@
 
 <div id="menuOverlay" class="menu-overlay"></div>
 
-
 <!-- MOVIE MENU -->
- <main class="movie-page">
+<main class="movie-page">
     <nav class="movie-tabs" aria-label="Movie categories">
-      <a href="moviemenuJ.html" class="movie-tab active">Now Showing</a>
+      <a href="movieMenuJ.html" class="movie-tab active">Now Showing</a>
       <a href="upcomingMenuJ.html" class="movie-tab">Upcoming</a>
     </nav>
 
     <div class="movie-list-section">
-      <div class="movie-grid" id="movieGrid">
-        <a href="movieDetailsJ.html"></a>
-      </div>
+      <div class="movie-grid" id="movieGrid"></div>
     </div>
-  </main>
-
+</main>
 
 <!-- FOOTER -->
 <footer class="footer-section mt-1 px-3 pt-4 pb-5">
     <div class="row g-4">
-<!-- Contact us -->
+        <!-- Contact us -->
         <div class="col-sm-6 col-md-5">
             <h6 class="footer-label">Contact us</h6>
             <div class="footer-detail mt-3">
                 <p><i class="bi bi-geo-alt-fill me-2"></i>Kalliotie 6, 90500, Oulu</p>
-                    <p><i class="bi bi-telephone-fill me-2"></i>08 5542711</p>
-                    <p><i class="bi bi-envelope-fill me-2"></i>booking@elokuvateatterister.com</p>
-                </div>
+                <p><i class="bi bi-telephone-fill me-2"></i>08 5542711</p>
+                <p><i class="bi bi-envelope-fill me-2"></i>booking@elokuvateatterister.com</p>
             </div>
-<!-- Opening hours -->
+        </div>
+
+        <!-- Opening hours -->
         <div class="col-sm-6 col-md-7">
             <h6 class="footer-label"><i class="bi bi-clock-fill me-2"></i>Opening hours</h6>
             <div class="footer-detail mt-3">
                 <div class="opening-row d-flex justify-content-between mb-2">
-                        <span class="text-muted-custom">Monday - Friday</span>
-                        <span class="time-text">10:00 AM - 11:00 PM</span>
-                    </div>
-                    <div class="opening-row d-flex justify-content-between">
-                        <span class="text-muted-custom">Saturday - Sunday</span>
-                        <span class="time-text">09:00 AM - 12:00 AM</span>
-                    </div>
+                    <span class="text-muted-custom">Monday - Friday</span>
+                    <span class="time-text">10:00 AM - 11:00 PM</span>
                 </div>
-<!-- Follow us -->
+                <div class="opening-row d-flex justify-content-between">
+                    <span class="text-muted-custom">Saturday - Sunday</span>
+                    <span class="time-text">09:00 AM - 12:00 AM</span>
+                </div>
+            </div>
+
+            <!-- Follow us -->
             <h6 class="footer-label mt-4">Follow us</h6>
             <div class="d-flex gap-3 mt-2 social-icons">
                 <i class="bi bi-facebook fs-4"></i>
@@ -95,75 +92,8 @@
             </div>
         </div>
     </div>
-</div>
 </footer>
 
-
-
-
-
-  <script>
-    // SIDE MENU TOGGLE
-document.addEventListener('DOMContentLoaded', () => {
-    const menu = document.getElementById('sideMenu');
-    const overlay = document.getElementById('menuOverlay');
-    const openBtn = document.getElementById('menuToggle');
-    const closeBtn = document.getElementById('menuClose');
-
-    if (!menu || !overlay || !openBtn || !closeBtn) return;
-
-    // Open menu
-    openBtn.addEventListener('click', () => {
-        menu.classList.add('active');
-        overlay.classList.add('active');
-    });
-
-    // Click X to close
-    closeBtn.addEventListener('click', () => {
-        menu.classList.remove('active');
-        overlay.classList.remove('active');
-    });
-
-    // Click on the background to close
-    overlay.addEventListener('click', () => {
-        menu.classList.remove('active');
-        overlay.classList.remove('active');
-    });
-});
-
-// Jussi's Script
-
-    const movieGrid = document.getElementById('movieGrid')
-
-    const renderMovies = (movies) => {
-      movieGrid.innerHTML = movies.map((movie) => `
-      <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
-        <article class="movie-card">
-          <div class="movie-poster"></div>
-          <h2 class="movie-title">${movie.title}</h2>
-          <p class="movie-time">${movie.genre}</p>
-        </article>
-       </a> 
-      `).join('')
-    }
-
-    const loadMovies = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/movies/now-showing')
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch movies')
-        }
-
-        const movies = await response.json()
-        renderMovies(movies)
-      } catch (error) {
-        console.error(error)
-        movieGrid.innerHTML = '<p class="movie-time">Failed to load movies.</p>'
-      }
-    }
-
-    loadMovies()
-  </script>
+<script src="js/pages.js"></script>
 </body>
 </html>

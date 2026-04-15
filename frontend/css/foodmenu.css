@@ -102,17 +102,5 @@
     display: none !important;
 }
 #foodList, #drinksList, #snacksList, #othersList {
-    display: none;
-}
-#foodList {
-    display: block; 
-}
-#foodList:target, 
-#drinksList:target, 
-#snacksList:target, 
-#othersList:target {
-    display: block !important;
-}
-:target:not(#foodList) ~ #foodList {
-    display: none !important;
+    display: block;
 }
