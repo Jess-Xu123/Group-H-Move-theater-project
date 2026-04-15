@@ -4,11 +4,20 @@ const db = require("../config/db");
 
 // get foods
 router.get("/", async (req, res) => {
-    const [rows] = await db.query(
-        "SELECT * FROM food_items ORDER BY name"
-    );
+  const category = req.query.category;
 
-    res.json(rows);
+  let sql = "SELECT * FROM food_items";
+  let params = [];
+
+  if (category) {
+    sql += " WHERE category = ?";
+    params.push(category);
+  }
+
+  sql += " ORDER BY name";
+
+  const [rows] = await db.query(sql, params);
+  res.json(rows);
 });
 
 module.exports = router;
