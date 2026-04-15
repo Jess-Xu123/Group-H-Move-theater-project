@@ -19,7 +19,7 @@
    <div class="d-flex align-items-center gap-3">
             <span class="lang-text">EN/FI</span>
             <i class="bi bi-search fs-5"></i>
-            <a href="loginZ.html" class="text-white">
+            <a href ="loginZ.html" class="text-white">
             <i class="bi bi-person fs-4"></i>
             </a>
             <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
@@ -46,36 +46,38 @@
 
 <div id="menuOverlay" class="menu-overlay"></div>
 
+
 <!-- MAIN MENU -->
 <main class="menu-page"> 
     <nav class="menu-tabs" aria-label="Menu categories">
-      <a href="#food" class="menu-tab active">Food</a>
-      <a href="#drinks" class="menu-tab">Drinks</a>
-      <a href="#snacks" class="menu-tab">Snacks</a>
-      <a href="#others" class="menu-tab">Others</a>
+      <a href="#" class="menu-tab active" data-category="Food">Food</a>
+      <a href="#" class="menu-tab" data-category="Drinks">Drinks</a>
+      <a href="#" class="menu-tab" data-category="Snacks">Snacks</a>
+      <a href="#" class="menu-tab" data-category="Others">Others</a>
     </nav>
+ 
+    <section id="food" class="menu-section active">
+      <h2 class="menu-heading">Food</h2>
+      <div id="foodList"></div>
+    </section>
 
-<section id="food" class="menu-section">
-  <h2 class="menu-heading">Food</h2>
-  <div id="foodList"></div>
-</section>
+    <section id="drinks" class="menu-section">
+      <h2 class="menu-heading">Drinks</h2>
+      <div id="drinksList"></div>
+    </section>
 
-<section id="drinks" class="menu-section">
-  <h2 class="menu-heading">Drinks</h2>
-  <div id="drinksList"></div>
-</section>
+    <section id="snacks" class="menu-section">
+      <h2 class="menu-heading">Snacks</h2>
+      <div id="snacksList"></div>
+    </section>
 
-<section id="snacks" class="menu-section">
-  <h2 class="menu-heading">Snacks</h2>
-  <div id="snacksList"></div>
-</section>
-
-<section id="others" class="menu-section">
-  <h2 class="menu-heading">Others</h2>
-  <div id="othersList"></div>
-</section>  
+    <section id="others" class="menu-section">
+      <h2 class="menu-heading">Others</h2>
+      <div id="othersList"></div>
+    </section>  
 
 </main>
+
 
 <!-- FOOTER -->
 <footer class="footer-section mt-1 px-3 pt-4 pb-5">
@@ -113,6 +115,128 @@
 </div>
 </footer>
 
-<script src="js/pages.js"></script>
+
+<script>
+
+// SIDE MENU TOGGLE
+document.addEventListener('DOMContentLoaded', () => {
+    const menu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('menuOverlay');
+    const openBtn = document.getElementById('menuToggle');
+    const closeBtn = document.getElementById('menuClose');
+
+    if (!menu || !overlay || !openBtn || !closeBtn) return;
+
+    // Open menu
+    openBtn.addEventListener('click', () => {
+        menu.classList.add('active');
+        overlay.classList.add('active');
+    });
+
+    // Click X to close
+    closeBtn.addEventListener('click', () => {
+        menu.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+
+    // Click on the background to close
+    overlay.addEventListener('click', () => {
+        menu.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+});
+
+const foodList = document.getElementById('foodList')
+const drinksList = document.getElementById('drinksList')
+const snacksList = document.getElementById('snacksList')
+const othersList = document.getElementById('othersList')
+
+const sections = {
+  Food: document.getElementById('food'),
+  Drinks: document.getElementById('drinks'),
+  Snacks: document.getElementById('snacks'),
+  Others: document.getElementById('others'),
+};
+
+const lists = {
+  Food: foodList,
+  Drinks: drinksList,
+  Snacks: snacksList,
+  Others: othersList,
+};
+
+const formatPrice = (price) => {
+  return `${Number(price).toFixed(2).replace('.', ',')}€`
+}
+
+const createItemHtml = (item) => {
+  return `
+    <article class="menu-item">
+    <div class="menu-image"></div>
+    <div class="menu-info">
+    <h3 class="menu-name">${item.name}</h3>
+    <p class="menu-desc">${item.description}</p>
+    <p class="menu-price">${formatPrice(item.price)}</p>
+    </div>
+    <div class="menu-action">
+    <button class="add-btn" type="button" onclick="addToCart(${item.food_id})">Add</button>
+    </div>
+    </article>`
+}
+
+const setActiveTab = (category) => {
+  document.querySelectorAll('.menu-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.category === category);
+  });
+};
+
+const setActiveSection = (category) => {
+  Object.entries(sections).forEach(([key, section]) => {
+    section.classList.toggle('active', key === category);
+  });
+};
+
+const loadFoods = async (category) => {
+  const res = await fetch(`/api/foods?category=${category}`);
+  const items = await res.json();
+
+  const list = lists[category];
+  list.innerHTML = '';
+
+  items.forEach(item => {
+    list.innerHTML += createItemHtml(item);
+  });
+};
+
+// click tab
+document.querySelectorAll('.menu-tab').forEach(tab => {
+  tab.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const category = tab.dataset.category;
+
+    setActiveTab(category);
+    setActiveSection(category);
+    loadFoods(category);
+  });
+});
+
+// default load Food
+loadFoods('Food');
+
+function addToCart(id) {
+  console.log("FRONT ID:", id);
+    fetch("/api/cart/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ item_id: id })
+    })
+    .then(res => res.json())
+    .then(() => alert("Added!"));
+}
+
+</script>
 </body>
 </html>
