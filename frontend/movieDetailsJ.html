@@ -18,7 +18,7 @@
    <div class="d-flex align-items-center gap-3">
             <span class="lang-text">EN/FI</span>
             <i class="bi bi-search fs-5"></i>
-            <a href ="loginZ.html" class="text-white">
+            <a href="loginZ.html" class="text-white">
             <i class="bi bi-person fs-4"></i>
             </a>
             <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
@@ -45,11 +45,10 @@
 
 <div id="menuOverlay" class="menu-overlay"></div>
 
-
 <!-- MOVIE DETAILS PAGE -->
   <main class="movie-page">
     <nav class="movie-tabs" aria-label="Movie categories">
-      <a href="moviemenuJ.html" class="movie-tab active">Now Showing</a>
+      <a href="movieMenuJ.html" class="movie-tab active">Now Showing</a>
       <a href="upcomingMenuJ.html" class="movie-tab">Upcoming</a>
     </nav>
 
@@ -82,7 +81,7 @@
     </section>
   </main>
 
-    <!-- FOOTER -->
+<!-- FOOTER -->
 <footer class="footer-section mt-1 px-3 pt-4 pb-5">
     <div class="row g-4">
 <!-- Contact us -->
@@ -117,66 +116,7 @@
     </div>
 </div>
 </footer>
-<script src="js/app.js"></script>
 
-   <script>
-    const params = new URLSearchParams(window.location.search)
-    const movieId = params.get('id')
-
-    const detailTitle = document.getElementById('detailTitle')
-    const detailSub = document.getElementById('detailSub')
-    const detailTime = document.getElementById('detailTime')
-    const ageBadge = document.getElementById('ageBadge')
-    const detailDescription = document.getElementById('detailDescription')
-
-    const loadMovieDetails = async () => {
-      try {
-        const movieResponse = await fetch(`http://localhost:3001/api/movies/${movieId}`)
-
-        if (!movieResponse.ok) {
-          throw new Error('Failed to fetch movie details')
-        }
-
-        const movie = await movieResponse.json()
-
-        const showtimeResponse = await fetch(`http://localhost:3001/api/movies/${movieId}/showtimes`)
-
-        if (!showtimeResponse.ok) {
-          throw new Error('Failed to fetch movie showtimes')
-        }
-
-        const showtimes = await showtimeResponse.json()
-
-        detailTitle.textContent = movie.title
-        detailSub.textContent = `${movie.genre} • ${movie.duration_min} min`
-        ageBadge.textContent = movie.age_rating
-        detailDescription.textContent = movie.description
-
-        if (showtimes.length === 0) {
-          detailTime.textContent = 'No showtimes available'
-        } else {
-          detailTime.innerHTML = showtimes.map((showtime) => {
-            const date = new Date(showtime.show_date).toLocaleDateString('fi-FI', {
-              day: '2-digit',
-              month: '2-digit'
-            })
-
-            const time = showtime.show_time.slice(0, 5)
-
-            return `${date} ${time} • ${showtime.hall_name}`
-          }).join('<br>')
-        }
-      } catch (error) {
-        console.error(error)
-        detailTitle.textContent = 'Movie not found'
-        detailSub.textContent = ''
-        detailTime.textContent = ''
-        ageBadge.textContent = '-'
-        detailDescription.textContent = 'Could not load movie details.'
-      }
-    }
-
-    loadMovieDetails()
-  </script>
+<script src="js/pages.js"></script>
 </body>
 </html>
