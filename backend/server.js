@@ -6,6 +6,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const movieRoutes = require("./routes/movieRoutes");
 const foodRoutes = require("./routes/foodRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 const cors = require("cors");
 const path = require('path');
 
@@ -20,6 +21,7 @@ app.use("/api/event", eventRoutes);
 app.use("/api/store", storeRoutes);
 app.use('/api/movies', movieRoutes);
 app.use('/api/foods', foodRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.use(express.static(path.join(__dirname, '../frontend')));
 
