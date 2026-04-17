@@ -72,15 +72,15 @@ async function loadNowShowingMovies(movieGrid) {
 
     const movies = await response.json();
 
-movieGrid.innerHTML = movies.map((movie) => `
-  <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
-    <article class="movie-card">
-      <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster">
-      <h2 class="movie-title">${movie.title}</h2>
-      <p class="movie-time">${movie.genre}</p>
-    </article>
-  </a>
-`).join('');
+    movieGrid.innerHTML = movies.map((movie) => `
+      <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
+        <article class="movie-card">
+          <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster">
+          <h2 class="movie-title">${movie.title}</h2>
+          <p class="movie-time">${movie.genre}</p>
+        </article>
+      </a>
+    `).join('');
   } catch (error) {
     console.error(error);
     movieGrid.innerHTML = '<p class="movie-time">Failed to load movies.</p>';
@@ -113,15 +113,15 @@ async function loadUpcomingMovies(movieGrid) {
 
     const movies = await response.json();
 
-movieGrid.innerHTML = movies.map((movie) => `
-  <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
-    <article class="movie-card">
-      <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster">
-      <h2 class="movie-title">${movie.title}</h2>
-      <p class="movie-time">In theaters ${formatReleaseDate(movie.release_date)}</p>
-    </article>
-  </a>
-`).join('');
+    movieGrid.innerHTML = movies.map((movie) => `
+      <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
+        <article class="movie-card">
+          <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster">
+          <h2 class="movie-title">${movie.title}</h2>
+          <p class="movie-time">In theaters ${formatReleaseDate(movie.release_date)}</p>
+        </article>
+      </a>
+    `).join('');
   } catch (error) {
     console.error(error);
     movieGrid.innerHTML = '<p class="movie-time">Failed to load upcoming movies.</p>';
@@ -129,29 +129,150 @@ movieGrid.innerHTML = movies.map((movie) => `
 }
 
 function initMovieDetailsPage() {
-  const detailTitle = document.getElementById('detailTitle');
-  const detailSub = document.getElementById('detailSub');
-  const detailTime = document.getElementById('detailTime');
-  const ageBadge = document.getElementById('ageBadge');
-  const detailDescription = document.getElementById('detailDescription');
+  const elements = {
+    detailTitle: document.getElementById('detailTitle'),
+    detailSub: document.getElementById('detailSub'),
+    ageBadge: document.getElementById('ageBadge'),
+    detailDescription: document.getElementById('detailDescription'),
+    detailPoster: document.getElementById('detailPoster'),
+    showtimeList: document.getElementById('showtimeList'),
+    decreaseTicketsBtn: document.getElementById('decreaseTickets'),
+    increaseTicketsBtn: document.getElementById('increaseTickets'),
+    ticketCount: document.getElementById('ticketCount'),
+    buyTicketsBtn: document.getElementById('buyTicketsBtn'),
+    ticketSelectionHelp: document.getElementById('ticketSelectionHelp')
+  };
 
-  if (!detailTitle || !detailSub || !detailTime || !ageBadge || !detailDescription) {
+  const requiredElements = Object.values(elements);
+  if (requiredElements.some((element) => !element)) {
     return;
   }
 
-  loadMovieDetails(detailTitle, detailSub, detailTime, ageBadge, detailDescription);
+  loadMovieDetails(elements);
 }
 
-async function loadMovieDetails(detailTitle, detailSub, detailTime, ageBadge, detailDescription) {
+function formatShowtimeDate(showDate) {
+  return new Date(showDate).toLocaleDateString('fi-FI', {
+    day: '2-digit',
+    month: '2-digit'
+  });
+}
+
+function formatShowtimeTime(showTime) {
+  return String(showTime).slice(0, 5);
+}
+
+function createShowtimeOption(showtime) {
+  const date = formatShowtimeDate(showtime.show_date);
+  const time = formatShowtimeTime(showtime.show_time);
+  const hall = showtime.hall_name || `Hall ${showtime.hall_id}`;
+  const format = showtime.format || 'Standard';
+  const language = showtime.language || 'EN';
+
+  return `
+    <button
+      type="button"
+      class="showtime-option"
+      data-showtime-id="${showtime.showtime_id}"
+      data-show-date="${showtime.show_date}"
+      data-show-time="${showtime.show_time}"
+      data-hall-name="${hall}"
+    >
+      <span class="showtime-main">${date} · ${time} · ${hall}</span>
+      <span class="showtime-meta">${format} · ${language}</span>
+    </button>
+  `;
+}
+
+function updateTicketCountDisplay(ticketCountElement, ticketCount) {
+  ticketCountElement.textContent = String(ticketCount);
+}
+
+function updateBuyButtonState(buyButton, hasSelection) {
+  buyButton.disabled = !hasSelection;
+}
+
+function bindShowtimeSelection(showtimeList, onSelect) {
+  const buttons = showtimeList.querySelectorAll('.showtime-option');
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      buttons.forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
+
+      onSelect({
+        showtime_id: Number(button.dataset.showtimeId),
+        show_date: button.dataset.showDate,
+        show_time: button.dataset.showTime,
+        hall_name: button.dataset.hallName
+      });
+    });
+  });
+}
+
+function savePendingTicketSelection(movie, selectedShowtime, ticketCount) {
+  if (!selectedShowtime) return;
+
+  const payload = {
+    movie_id: movie.movie_id,
+    movie_title: movie.title,
+    poster_url: movie.poster_url || '',
+    showtime_id: selectedShowtime.showtime_id,
+    show_date: selectedShowtime.show_date,
+    show_time: selectedShowtime.show_time,
+    hall_name: selectedShowtime.hall_name,
+    ticket_count: ticketCount,
+    saved_at: new Date().toISOString()
+  };
+
+  window.localStorage.setItem('pendingTicketSelection', JSON.stringify(payload));
+}
+
+async function loadMovieDetails(elements) {
+  const {
+    detailTitle,
+    detailSub,
+    ageBadge,
+    detailDescription,
+    detailPoster,
+    showtimeList,
+    decreaseTicketsBtn,
+    increaseTicketsBtn,
+    ticketCount,
+    buyTicketsBtn,
+    ticketSelectionHelp
+  } = elements;
+
   const params = new URLSearchParams(window.location.search);
   const movieId = params.get('id');
+
+  let selectedShowtime = null;
+  let selectedTicketCount = 1;
+
+  const setHelpMessage = (message) => {
+    ticketSelectionHelp.textContent = message;
+  };
+
+  updateTicketCountDisplay(ticketCount, selectedTicketCount);
+  updateBuyButtonState(buyTicketsBtn, false);
+
+  decreaseTicketsBtn.addEventListener('click', () => {
+    selectedTicketCount = Math.max(1, selectedTicketCount - 1);
+    updateTicketCountDisplay(ticketCount, selectedTicketCount);
+  });
+
+  increaseTicketsBtn.addEventListener('click', () => {
+    selectedTicketCount += 1;
+    updateTicketCountDisplay(ticketCount, selectedTicketCount);
+  });
 
   if (!movieId) {
     detailTitle.textContent = 'Movie not found';
     detailSub.textContent = '';
-    detailTime.textContent = '';
     ageBadge.textContent = '-';
     detailDescription.textContent = 'No movie id was provided.';
+    showtimeList.innerHTML = '<p class="showtime-empty">No showtimes available.</p>';
+    setHelpMessage('Movie id missing.');
     return;
   }
 
@@ -162,14 +283,10 @@ async function loadMovieDetails(detailTitle, detailSub, detailTime, ageBadge, de
       throw new Error('Failed to fetch movie details');
     }
 
-   const movie = await movieResponse.json();
+    const movie = await movieResponse.json();
 
-  const detailPoster = document.getElementById('detailPoster');
-  if (detailPoster) {
     detailPoster.src = movie.poster_url || 'assets/posters/placeholder.png';
     detailPoster.alt = `${movie.title} poster`;
-  }
-
 
     const showtimeResponse = await fetch(`${API_URL}/movies/${movieId}/showtimes`);
 
@@ -185,26 +302,36 @@ async function loadMovieDetails(detailTitle, detailSub, detailTime, ageBadge, de
     detailDescription.textContent = movie.description;
 
     if (showtimes.length === 0) {
-      detailTime.textContent = 'No showtimes available';
-    } else {
-      detailTime.innerHTML = showtimes.map((showtime) => {
-        const date = new Date(showtime.show_date).toLocaleDateString('fi-FI', {
-          day: '2-digit',
-          month: '2-digit'
-        });
-
-        const time = showtime.show_time.slice(0, 5);
-
-        return `${date} ${time} • ${showtime.hall_name}`;
-      }).join('<br>');
+      showtimeList.innerHTML = '<p class="showtime-empty">No showtimes available yet.</p>';
+      setHelpMessage('This movie does not currently have showtimes.');
+      return;
     }
+
+    showtimeList.innerHTML = showtimes.map(createShowtimeOption).join('');
+
+    bindShowtimeSelection(showtimeList, (showtime) => {
+      selectedShowtime = showtime;
+      updateBuyButtonState(buyTicketsBtn, true);
+      setHelpMessage(`Selected ${formatShowtimeDate(showtime.show_date)} ${formatShowtimeTime(showtime.show_time)} • ${showtime.hall_name}`);
+    });
+
+    buyTicketsBtn.addEventListener('click', () => {
+      if (!selectedShowtime) {
+        setHelpMessage('Select a showtime before continuing.');
+        return;
+      }
+
+      savePendingTicketSelection(movie, selectedShowtime, selectedTicketCount);
+      setHelpMessage(`Selected ${selectedTicketCount} ticket(s) for ${formatShowtimeDate(selectedShowtime.show_date)} ${formatShowtimeTime(selectedShowtime.show_time)} • ${selectedShowtime.hall_name}.`);
+    });
   } catch (error) {
     console.error(error);
     detailTitle.textContent = 'Movie not found';
     detailSub.textContent = '';
-    detailTime.textContent = '';
     ageBadge.textContent = '-';
     detailDescription.textContent = 'Could not load movie details.';
+    showtimeList.innerHTML = '<p class="showtime-empty">Could not load showtimes.</p>';
+    setHelpMessage('Could not load ticket options.');
   }
 }
 

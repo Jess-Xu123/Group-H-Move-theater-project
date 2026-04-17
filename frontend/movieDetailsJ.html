@@ -56,10 +56,10 @@
       <article class="movie-detail-card">
         <div class="poster-wrap">
           <img
-          id="detailPoster"
-          class="detail-poster-placeholder"
-          src="assets/posters/placeholder.png"
-          alt="Movie poster"
+            id="detailPoster"
+            class="detail-poster-placeholder"
+            src="assets/posters/placeholder.png"
+            alt="Movie poster"
           >
         </div>
 
@@ -67,7 +67,6 @@
           <div class="detail-info">
             <h2 class="detail-title" id="detailTitle">Movie name</h2>
             <p class="detail-sub" id="detailSub">Genre • 2h 00min</p>
-            <p class="detail-time" id="detailTime">Today 12:12</p>
           </div>
           <div class="age-badge" id="ageBadge" aria-label="Age rating">7</div>
         </div>
@@ -79,7 +78,27 @@
           </p>
         </div>
 
-        <a href="#" class="buy-btn">Buy tickets</a>
+        <section class="ticket-booking-section" aria-label="Ticket booking">
+          <h3 class="movie-description-title">Choose showtime</h3>
+          <div id="showtimeList" class="showtime-list">
+            <p class="showtime-empty">Loading showtimes...</p>
+          </div>
+
+          <div class="ticket-controls">
+            <div class="ticket-quantity-block">
+              <span class="ticket-label">Tickets</span>
+              <div class="ticket-stepper" aria-label="Ticket amount selector">
+                <button type="button" class="ticket-stepper-btn" id="decreaseTickets" aria-label="Decrease ticket count">−</button>
+                <span class="ticket-count" id="ticketCount">1</span>
+                <button type="button" class="ticket-stepper-btn" id="increaseTickets" aria-label="Increase ticket count">+</button>
+              </div>
+            </div>
+
+            <button type="button" class="buy-btn" id="buyTicketsBtn" disabled>Buy tickets</button>
+          </div>
+
+          <p class="ticket-selection-help" id="ticketSelectionHelp">Select a showtime to continue.</p>
+        </section>
       </article>
     </section>
   </main>
