@@ -61,7 +61,8 @@ CREATE TABLE movies (
     duration_min INT,
     age_rating VARCHAR(10),
     release_date DATE,
-    status VARCHAR(50)
+    status VARCHAR(50),
+    poster_url VARCHAR(255)
 );
 
 CREATE TABLE halls (
@@ -108,98 +109,109 @@ INSERT INTO movies (
     duration_min,
     age_rating,
     release_date,
-    status
+    status,
+    poster_url
 )
 VALUES
 (
-    'Movie 1',
-    'Test description for Movie 1.',
-    'Action',
-    95,
-    'K-12',
+    'The Super Mario Galaxy Movie',
+    'Mario and Luigi travel beyond the Mushroom Kingdom on a galaxy-spanning adventure to stop a new cosmic threat.',
+    'Animation / Adventure / Comedy',
+    98,
+    'K-7',
     '2026-04-01',
-    'now_showing'
+    'now_showing',
+    'assets/posters/mario.png'
 ),
 (
-    'Movie 2',
-    'Test description for Movie 2.',
-    'Comedy',
-    102,
-    'K-7',
-    '2026-04-03',
-    'upcoming'
-),
-(
-    'Movie 3',
-    'Test description for Movie 3.',
-    'Drama',
-    118,
-    'K-12',
-    '2026-04-05',
-    'now_showing'
-),
-(
-    'Movie 4',
-    'Test description for Movie 4.',
+    'Project Hail Mary',
+    'A lone astronaut wakes up far from Earth and must uncover how to save humanity before time runs out.',
     'Sci-Fi',
-    130,
-    'K-16',
-    '2026-04-07',
-    'upcoming'
-),
-(
-    'Movie 5',
-    'Test description for Movie 5.',
-    'Horror',
-    99,
-    'K-18',
-    '2026-04-09',
-    'now_showing'
-),
-(
-    'Movie 6',
-    'Test description for Movie 6.',
-    'Animation',
-    88,
-    'K-7',
-    '2026-04-11',
-    'upcoming'
-),
-(
-    'Movie 7',
-    'Test description for Movie 7.',
-    'Thriller',
-    110,
-    'K-16',
-    '2026-04-13',
-    'now_showing'
-),
-(
-    'Movie 8',
-    'Test description for Movie 8.',
-    'Adventure',
-    121,
+    156,
     'K-12',
-    '2026-04-15',
-    'upcoming'
+    '2026-03-20',
+    'now_showing',
+    'assets/posters/hailmary.png'
 ),
 (
-    'Movie 9',
-    'Test description for Movie 9.',
-    'Fantasy',
+    'You, Me & Tuscany',
+    'A romantic mix-up in Italy turns into an unexpected connection in the Tuscan countryside.',
+    'Romance / Comedy',
+    105,
+    'K-7',
+    '2026-04-10',
+    'now_showing',
+    'assets/posters/tuscany.png'
+),
+(
+    'Reminders of Him',
+    'A woman released from prison tries to rebuild her life and reconnect with the family she lost.',
+    'Romance / Drama',
+    114,
+    'K-12',
+    '2026-03-13',
+    'now_showing',
+    'assets/posters/remindersofhim.png'
+),
+(
+    'Ready or Not 2: Here I Come',
+    'Grace is pulled into another deadly game where survival once again depends on wit, nerve, and luck.',
+    'Horror / Comedy / Thriller',
+    108,
+    'K-16',
+    '2026-03-20',
+    'now_showing',
+    'assets/posters/readyornot.png'
+),
+(
+    'The Odyssey',
+    'Odysseus begins his long and dangerous journey home after war, facing mythic dangers across the sea.',
+    'Epic Fantasy / Adventure',
+    150,
+    'K-12',
+    '2026-07-17',
+    'upcoming',
+    'assets/posters/odussey.png'
+),
+(
+    'Dune: Part Three',
+    'Paul Atreides faces the consequences of power as the next chapter of the desert saga unfolds.',
+    'Sci-Fi / Epic',
+    165,
+    'K-12',
+    '2026-12-18',
+    'upcoming',
+    'assets/posters/dune.png'
+),
+(
+    'Mother Mary',
+    'A global pop icon and a fashion designer reconnect in an intense and emotionally charged drama.',
+    'Psychological Drama / Thriller',
+    112,
+    'K-16',
+    '2026-04-24',
+    'upcoming',
+    'assets/posters/mothermary.png'
+),
+(
+    'Pressure',
+    'In the tense days before D-Day, military leaders and forecasters struggle under the weight of one critical decision.',
+    'War / Historical Drama',
+    100,
+    'K-12',
+    '2026-05-29',
+    'upcoming',
+    'assets/posters/pressure.png'
+),
+(
+    'Supergirl',
+    'Kara Zor-El takes center stage in DC Studios’ new big-screen superhero adventure.',
+    'Action / Adventure',
     127,
-    'K-12',
-    '2026-04-17',
-    'now_showing'
-),
-(
-    'Movie 10',
-    'Test description for Movie 10.',
-    'Romance',
-    104,
-    'K-7',
-    '2026-04-19',
-    'upcoming'
+    'K',
+    '2026-06-26',
+    'upcoming',
+    'assets/posters/supergirl.png'
 );
 
 INSERT INTO halls (
