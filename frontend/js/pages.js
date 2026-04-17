@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCurrentPage();
 });
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = 'http://localhost:3000/api';
 
 function getCurrentFileName() {
   return window.location.pathname.split('/').pop().toLowerCase();
@@ -72,15 +72,15 @@ async function loadNowShowingMovies(movieGrid) {
 
     const movies = await response.json();
 
-    movieGrid.innerHTML = movies.map((movie) => `
-      <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
-        <article class="movie-card">
-          <div class="movie-poster"></div>
-          <h2 class="movie-title">${movie.title}</h2>
-          <p class="movie-time">${movie.genre}</p>
-        </article>
-      </a>
-    `).join('');
+movieGrid.innerHTML = movies.map((movie) => `
+  <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
+    <article class="movie-card">
+      <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster">
+      <h2 class="movie-title">${movie.title}</h2>
+      <p class="movie-time">${movie.genre}</p>
+    </article>
+  </a>
+`).join('');
   } catch (error) {
     console.error(error);
     movieGrid.innerHTML = '<p class="movie-time">Failed to load movies.</p>';
@@ -113,15 +113,15 @@ async function loadUpcomingMovies(movieGrid) {
 
     const movies = await response.json();
 
-    movieGrid.innerHTML = movies.map((movie) => `
-      <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
-        <article class="movie-card">
-          <div class="movie-poster"></div>
-          <h2 class="movie-title">${movie.title}</h2>
-          <p class="movie-time">In theaters ${formatReleaseDate(movie.release_date)}</p>
-        </article>
-      </a>
-    `).join('');
+movieGrid.innerHTML = movies.map((movie) => `
+  <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
+    <article class="movie-card">
+      <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster">
+      <h2 class="movie-title">${movie.title}</h2>
+      <p class="movie-time">In theaters ${formatReleaseDate(movie.release_date)}</p>
+    </article>
+  </a>
+`).join('');
   } catch (error) {
     console.error(error);
     movieGrid.innerHTML = '<p class="movie-time">Failed to load upcoming movies.</p>';
@@ -162,7 +162,14 @@ async function loadMovieDetails(detailTitle, detailSub, detailTime, ageBadge, de
       throw new Error('Failed to fetch movie details');
     }
 
-    const movie = await movieResponse.json();
+   const movie = await movieResponse.json();
+
+  const detailPoster = document.getElementById('detailPoster');
+  if (detailPoster) {
+    detailPoster.src = movie.poster_url || 'assets/posters/placeholder.png';
+    detailPoster.alt = `${movie.title} poster`;
+  }
+
 
     const showtimeResponse = await fetch(`${API_URL}/movies/${movieId}/showtimes`);
 
