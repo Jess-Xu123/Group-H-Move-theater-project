@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const auth = require("../middleware/auth");
 
 const db = require("../config/db");
 const { hashPassword, comparePassword } = require("../utils/hash");
 
-const SECRET_KEY = process.env.JWT_SECRET; // should be in env
+const SECRET_KEY = process.env.JWT_SECRET;
 
 router.post("/register", async (req, res) => {
     try {
@@ -64,7 +65,7 @@ router.post("/login", async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user.id, username: user.username },
+            { userId: user.id, username: user.username },
             SECRET_KEY,
             { expiresIn: process.env.JWT_EXPIRES_IN }
         );
@@ -73,6 +74,7 @@ router.post("/login", async (req, res) => {
             code: 0,
             message: "login success",
             token,
+            userId: user.id,
             username: user.username,
             email: user.email
         });
@@ -84,19 +86,11 @@ router.post("/login", async (req, res) => {
 });
 
 // get userinfo（need token
-router.get("/userinfo", async (req, res) => {
+router.get("/userinfo", auth, async (req, res) => {
     try {
-        const authHeader = req.headers["authorization"];
-
-        if (!authHeader) {
-            return res.status(401).json({ code: 1, message: "unauthorized" });
-        }
-
-        const token = authHeader.split(" ")[1];
-        const decoded = jwt.verify(token, SECRET_KEY);
         const [results] = await db.query(
             "SELECT username, email FROM users WHERE id = ?",
-            [decoded.id]
+            [req.user.userId]
         );
 
         if (results.length === 0) {
@@ -110,26 +104,17 @@ router.get("/userinfo", async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.status(403).json({ code: 1, message: "invalid token" });
+        res.status(500).json({ code: 1, message: "server error" });
     }
 });
 
-router.post("/update", async (req, res) => {
+router.post("/update", auth, async (req, res) => {
     try {
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader) {
-            return res.json({ code: 1, message: "no token provided" });
-        }
-
-        const token = authHeader.split(" ")[1];
-        const decoded = jwt.verify(token, SECRET_KEY);
-        
         const { username, email } = req.body;
 
         await db.query(
             "UPDATE users SET username = ?, email = ? WHERE id = ?",
-            [username, email, decoded.id]
+            [username, email, req.user.userId]
         );
 
         res.json({ code: 0, message: "update success" });
