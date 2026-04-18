@@ -298,8 +298,15 @@ INSERT INTO event_schedule (event_type_id, event_date, start_time, available_slo
 (2, '2026-08-15', '19:30:00', 50, TRUE), 
 (2, '2026-08-16', '19:30:00', 50, TRUE);
 
+DROP TABLE IF EXISTS cart_items;
+
 CREATE TABLE cart_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
-    quantity INT DEFAULT 1
+    quantity INT DEFAULT 1,
+    user_id INT NOT NULL,
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
