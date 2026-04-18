@@ -97,21 +97,22 @@
                 background: #2a2a3d;
                 transform: scale(1.02);
             }
+
+            #mobile-content .card {
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            }
         }
     </style>
 </head>
-<body class="main-bg text-white">
-
-<!-- TOP NAV -->
+<body id="account-page" class="main-bg text-white">
 <nav class="navbar navbar-dark px-3 py-2">
     <div class="container-fluid p-0">
         <a href="homeScreenX.html" class="navbar-brand fw-bold">Logo</a>
-   <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
             <span class="lang-text">EN/FI</span>
             <i class="bi bi-search fs-5"></i>
-            <a href ="loginZ.html" class="text-white">
-            <i class="bi bi-person fs-4"></i>
-            </a>
+            <i class="bi bi-person fs-4" id="userIcon" style="cursor:pointer;"></i>
             <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
         </div>
     </div>
@@ -136,6 +137,7 @@
 
 <div id="menuOverlay" class="menu-overlay"></div>
 
+<div id="menuOverlay" class="menu-overlay"></div>
 
 <div class="container-fluid">
     <div class="row">
@@ -143,17 +145,42 @@
         <nav class="col-lg-3 col-md-4 sidebar p-3">
             <div class="text-center mb-4">
                 <img src="https://placehold.co/100x100" class="rounded-circle profile-img">
-                <h5 class="mt-2">John Doe</h5>
-                <p class="text-muted">john@email.com</p>
+                <h5 id="account-username" class="mt-2">Username</h5>
+                <p class="text-muted">example@email.com</p>
             </div>
 
             <ul class="nav flex-column">
-                <li class="nav-item"><a class="nav-link active" href="#"><span class="icon"><i class="bi bi-person-circle"></i></span>Profile</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><span class="icon"><i class="bi bi-ticket-perforated-fill"></i></span>My Tickets</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><span class="icon"><i class="bi bi-cup-straw"></i></span>Food & Drinks</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><span class="icon"><i class="bi bi-card-text"></i></span>Discount</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><span class="icon"><i class="bi bi-heart"></i></span>Favorites</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><span class="icon"><i class="bi bi-wallet2"></i></span>Wallet</a></li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" data-section="profile">
+                        <span class="icon"><i class="bi bi-person-circle"></i></span>Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="tickets">
+                        <span class="icon"><i class="bi bi-ticket-perforated-fill"></i></span>My Tickets
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="food">
+                        <span class="icon"><i class="bi bi-cup-straw"></i></span>Food & Drinks
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="wallet">
+                        <span class="icon"><i class="bi bi-wallet2"></i></span>Wallet
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-section="favorites">
+                        <span class="icon"><i class="bi bi-heart"></i></span>Favorites
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="logoutBtn" data-section="logout">
+                        <span class="icon"><i class="bi bi-box-arrow-right"></i></span>
+                        Logout
+                    </a>
+                </li>
             </ul>
         </nav>
 
@@ -161,21 +188,16 @@
             <div class="card mb-4">
                 <div class="card-header">Profile Information</div>
                 <div class="card-body">
-                    <form>
+                    <form id="profile-form">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Name</label>
-                                <input type="text" class="form-control" value="John Doe">
+                                <input type="text" id="username" class="form-control" value="">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Email</label>
-                                <input type="email" class="form-control" value="john@email.com">
+                                <input type="email" id="email" class="form-control" value="">
                             </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Phone</label>
-                            <input type="text" class="form-control" placeholder="+358...">
                         </div>
 
                         <button class="btn btn-primary">Save Changes</button>
@@ -198,9 +220,10 @@
             </div>
 
             <div class="card mb-4">
-                <div class="card-header">Discount</div>
+                <div class="card-header">Wallet</div>
                 <div class="card-body">
-                    <p>No discounts available.</p>
+                    <h5>Balance: €0</h5>
+                    <button class="btn btn-success mt-2">Add Funds</button>
                 </div>
             </div>
 
@@ -211,15 +234,9 @@
                 </div>
             </div>
 
-            <div class="card mb-4">
-                <div class="card-header">Wallet</div>
-                <div class="card-body">
-                    <h5>Balance: €0</h5>
-                    <button class="btn btn-success mt-2">Add Funds</button>
-                </div>
-            </div>
-
         </main>
+        
+        <div id="mobile-content" class="d-block d-md-none p-3"></div>
     </div>
 </div>
 
@@ -258,7 +275,10 @@
     </div>
 </div>
 </footer>
-<script src="js/app.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- <script src="./js/app.js"></script>
+<script src="./js/frontend.js"></script> -->
+<script type="module" src="./js/main.js"></script>
 </body>
 </html>
