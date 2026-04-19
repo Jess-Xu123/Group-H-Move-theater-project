@@ -1,6 +1,6 @@
 CREATE DATABASE users_system;
 USE users_system;
-
+-- 1. Create Users (AUTO_INCREMENT => SERIAL)
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -9,6 +9,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 2. Product table (Serial tickets, gift cards)
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -28,6 +29,7 @@ INSERT INTO products (name, category, price, description) VALUES
 ('Gift Card 40€', 'gift', 40.00, 'Valid for a year'),
 ('Custom Gift Card', 'gift', 0.00, 'Enter any amount');
 
+-- 3. Events table 
 CREATE TABLE event_types (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -41,7 +43,7 @@ CREATE TABLE event_schedule (
     event_date DATE NOT NULL,
     start_time TIME NOT NULL,
     available_slots INT DEFAULT 1,
-    is_special_event TINYINT(1) DEFAULT 0,
+    is_special_event TINYINT DEFAULT 0,
     FOREIGN KEY (event_type_id) REFERENCES event_types(id)
 );
 
@@ -53,6 +55,8 @@ CREATE TABLE event_bookings (
     FOREIGN KEY (schedule_id) REFERENCES event_schedule(id)
 );
 
+
+-- 4. Movies table 
 CREATE TABLE movies (
     movie_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -65,12 +69,15 @@ CREATE TABLE movies (
     poster_url VARCHAR(255)
 );
 
+
+-- 5. Halls table 
 CREATE TABLE halls (
     hall_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     capacity INT NOT NULL
 );
 
+-- 6. Showtimes table 
 CREATE TABLE showtimes (
     showtime_id INT AUTO_INCREMENT PRIMARY KEY,
     movie_id INT NOT NULL,
@@ -94,6 +101,8 @@ CREATE TABLE bookings (
     FOREIGN KEY (showtime_id) REFERENCES showtimes(showtime_id)
 );
 
+
+-- 7. Foods table 
 CREATE TABLE food_items (
     food_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -300,6 +309,7 @@ INSERT INTO event_schedule (event_type_id, event_date, start_time, available_slo
 
 DROP TABLE IF EXISTS cart_items;
 
+-- 7. Carts table 
 CREATE TABLE cart_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
