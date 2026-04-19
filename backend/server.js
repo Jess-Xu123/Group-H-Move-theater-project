@@ -23,12 +23,23 @@ app.use('/api/movies', movieRoutes);
 app.use('/api/foods', foodRoutes);
 app.use("/api/cart", cartRoutes);
 
-app.use(express.static(path.join(__dirname, '../frontend')));
+//app.use(express.static(path.join(__dirname, '../frontend')));
+const frontendPath = path.resolve(__dirname, '..', 'frontend');
+app.use(express.static(frontendPath));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/loginZ.html'));
+  /*res.sendFile(path.join(__dirname, '../frontend/loginZ.html'));
+});*/
+const loginFile = path.join(frontendPath, 'loginZ.html');
+    res.sendFile(loginFile, (err) => {
+        if (err) {
+            console.error("Cannot find loginZ.html at:", loginFile);
+            res.status(200).send("Server is alive, but frontend file is missing at the expected path.");
+        }
+    });
 });
 
-app.listen(port, () => {
+
+app.listen(port, "0.0.0.0",() => {
   console.log("Server running on port " + port);
 });
