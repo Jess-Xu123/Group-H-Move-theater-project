@@ -64,6 +64,8 @@
 .menu-image {
   width: 100px;
   height: 100px;
+  display: block;
+  object-fit: cover;
   background: #2d2d3a;
   border-radius: 8px;
 }

@@ -169,19 +169,39 @@ const formatPrice = (price) => {
   return `${Number(price).toFixed(2).replace('.', ',')}€`
 }
 
+const FOOD_IMAGES = {
+  'Hot Dog': 'assets/menuitems/hotdog.png',
+  'Hamburger': 'assets/menuitems/hamburger.png',
+  'Pizza Slice': 'assets/menuitems/pizzaslice.png',
+
+  'Cola': 'assets/menuitems/cola.png',
+  'Diet Cola': 'assets/menuitems/dietcola.png',
+  'Water': 'assets/menuitems/water.png',
+
+  'Popcorn': 'assets/menuitems/popcorn.png',
+  'Peanuts': 'assets/menuitems/peanuts.png',
+  'Chocolate Bar': 'assets/menuitems/chocolatebar.png',
+
+  'Ice Cream': 'assets/menuitems/icecream.png',
+  'Donut': 'assets/menuitems/donut.png',
+  'Muffin': 'assets/menuitems/muffin.png'
+};
+
 const createItemHtml = (item) => {
+  const imageSrc = FOOD_IMAGES[item.name] || '';
+
   return `
     <article class="menu-item">
-    <div class="menu-image"></div>
-    <div class="menu-info">
-    <h3 class="menu-name">${item.name}</h3>
-    <p class="menu-desc">${item.description}</p>
-    <p class="menu-price">${formatPrice(item.price)}</p>
-    </div>
-    <div class="menu-action">
-    <button class="add-btn" type="button" onclick="addToCart(${item.food_id})">Add</button>
-    </div>
-    </article>`
+      <img class="menu-image" src="${imageSrc}" alt="${item.name}">
+      <div class="menu-info">
+        <h3 class="menu-name">${item.name}</h3>
+        <p class="menu-desc">${item.description}</p>
+        <p class="menu-price">${formatPrice(item.price)}</p>
+      </div>
+      <div class="menu-action">
+        <button class="add-btn" type="button" onclick="addToCart(${item.food_id})">Add</button>
+      </div>
+    </article>`;
 }
 
 const setActiveTab = (category) => {

@@ -280,21 +280,21 @@ INSERT INTO food_items (
     category
 )
 VALUES
-    ('Food1', 'Description for Food1', 5.00, 'Food'),
-    ('Food2', 'Description for Food2', 6.00, 'Food'),
-    ('Food3', 'Description for Food3', 7.00, 'Food'),
+    ('Hot Dog', 'Standard hot dog in a bun.', 6.00, 'Food'),
+    ('Hamburger', 'Classic beef hamburger.', 7.00, 'Food'),
+    ('Pizza Slice', 'Large slice of pepperoni pizza.', 5.00, 'Food'),
 
-    ('Drink1', 'Description for Drink1', 3.00, 'Drinks'),
-    ('Drink2', 'Description for Drink2', 4.00, 'Drinks'),
-    ('Drink3', 'Description for Drink3', 5.00, 'Drinks'),
+    ('Cola', 'Regular cola fountain drink.', 3.50, 'Drinks'),
+    ('Diet Cola', 'Sugar-free cola fountain drink.', 3.50, 'Drinks'),
+    ('Water', 'Bottled still water.', 2.50, 'Drinks'),
 
-    ('Snack1', 'Description for Snack1', 2.50, 'Snacks'),
-    ('Snack2', 'Description for Snack2', 3.50, 'Snacks'),
-    ('Snack3', 'Description for Snack3', 4.50, 'Snacks'),
+    ('Popcorn', 'Standard salted popcorn.', 5.00, 'Snacks'),
+    ('Peanuts', 'Bag of salted peanuts.', 3.00, 'Snacks'),
+    ('Chocolate Bar', 'Milk chocolate bar.', 2.50, 'Snacks'),
 
-    ('Other1', 'Description for Other1', 1.50, 'Others'),
-    ('Other2', 'Description for Other2', 2.50, 'Others'),
-    ('Other3', 'Description for Other3', 3.50, 'Others');
+    ('Ice Cream', 'Vanilla ice cream cup.', 4.00, 'Others'),
+    ('Donut', 'Classic glazed donut.', 2.50, 'Others'),
+    ('Muffin', 'Classic blueberry muffin.', 3.00, 'Others');
 
 
 INSERT INTO event_types (name, description, base_price) VALUES 
