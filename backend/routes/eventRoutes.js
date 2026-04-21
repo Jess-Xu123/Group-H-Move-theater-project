@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const pool = require("../config/db");
+const { query } = require("../config/db");
 
 // GET: all current events
 router.get('/event-schedule', async (req, res) => {
     try {
-        const [rows] = await pool.query(`
+        const result = await query(`
             SELECT 
                 s.id, 
                 t.name, 
@@ -17,7 +17,7 @@ router.get('/event-schedule', async (req, res) => {
             ORDER BY s.event_date ASC
         `);
 
-        res.json(rows);
+        res.json(result.rows);
 
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -30,19 +30,18 @@ router.post('/book-event', async (req, res)=> {
 
 // 1. Insert new booking
     try {
-        await pool.query(
-        'INSERT INTO event_bookings (schedule_id, user_email) VALUES (?, ?)',
+        await query(
+        'INSERT INTO event_bookings (schedule_id, user_email) VALUES ($1, $2)',
         [scheduleId, email]
     );
 // 2. Update event schedule slots
 
-        await pool.query (
-            'UPDATE event_schedule SET available_slots = available_slots - 1 WHERE id = ?',
+        await query (
+            'UPDATE event_schedule SET available_slots = available_slots - 1 WHERE id = $1',
             [scheduleId]
         );
 
         res.json({ success: true, message: "Booking confirmed!"});}
-
         catch(err) {
             console.error(err.message);
             res.status(500).json({ error: "Booking failed: " + err.message});
@@ -55,8 +54,8 @@ router.put('/bookings/:id', async (req, res) => {
     const { email } = req.body;
 
     try {
-        const [result] = await pool.query(
-            'UPDATE event_bookings SET user_email = ? WHERE id = ?',
+        const result = await query(
+            'UPDATE event_bookings SET user_email = $1 WHERE id = $2',
             [email, id]
         );
 
@@ -79,24 +78,24 @@ router.delete('/bookings/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const [bookingInfo] = await pool.query(
-            'SELECT schedule_id FROM event_bookings WHERE id = ?',
+        const result = await query(
+            'SELECT schedule_id FROM event_bookings WHERE id = $1',
             [id]
         );
 
-        if (bookingInfo.length === 0) {
+        if (result.rows.length === 0) {
             return res.status(404).json({ error: "Booking not found" });
         }
 
-        const scheduleId = bookingInfo[0].schedule_id;
+        const scheduleId = result.rows[0].schedule_id;
 
-        await pool.query(
-            'DELETE FROM event_bookings WHERE id = ?',
+        await query(
+            'DELETE FROM event_bookings WHERE id = $1',
             [id]
         );
 
-        await pool.query(
-            'UPDATE event_schedule SET available_slots = available_slots + 1 WHERE id = ?',
+        await query(
+            'UPDATE event_schedule SET available_slots = available_slots + 1 WHERE id = $1',
             [scheduleId]
         );
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db");
+const { query } = require("../config/db");
 
 // get foods
 router.get("/", async (req, res) => {
@@ -10,14 +10,18 @@ router.get("/", async (req, res) => {
   let params = [];
 
   if (category) {
-    sql += " WHERE category = ?";
+    sql += " WHERE category = $1";
     params.push(category);
   }
 
   sql += " ORDER BY name";
 
-  const [rows] = await db.query(sql, params);
-  res.json(rows);
+  try{
+    const result = await query(sql, params);
+    res.json(result.rows);
+  } catch(err) {
+    res.status(500).json({error: err.message});
+  }
 });
 
 module.exports = router;

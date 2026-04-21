@@ -30,7 +30,7 @@ app.use(express.static(frontendPath));
 app.get('/', (req, res) => {
   /*res.sendFile(path.join(__dirname, '../frontend/loginZ.html'));
 });*/
-const loginFile = path.join(frontendPath, 'loginZ.html');
+const loginFile = path.join(frontendPath, 'homeScreenX.html');
     res.sendFile(loginFile, (err) => {
         if (err) {
             console.error("Cannot find loginZ.html at:", loginFile);

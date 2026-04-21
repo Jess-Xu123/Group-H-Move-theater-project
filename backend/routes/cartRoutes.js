@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db");
+const { query } = require("../config/db");
 const auth = require("../middleware/auth");
 
 // add
@@ -8,19 +8,19 @@ router.post("/add", auth, async (req, res) => {
     const { item_id } = req.body;
     const userId = req.user.userId;
 
-    const [rows] = await db.query(
-        "SELECT * FROM cart_items WHERE item_id = ? AND user_id = ?",
+    const result = await query(
+        "SELECT * FROM cart_items WHERE item_id = $1 AND user_id = $2",
         [item_id, userId]
     );
 
-    if (rows.length > 0) {
-        await db.query(
-            "UPDATE cart_items SET quantity = quantity + 1 WHERE item_id = ? AND user_id = ?",
+    if (result.rows.length > 0) {
+        await query(
+            "UPDATE cart_items SET quantity = quantity + 1 WHERE item_id = $1 AND user_id = $2",
             [item_id, userId]
         );
     } else {
-        await db.query(
-            "INSERT INTO cart_items (item_id, quantity, user_id) VALUES (?, 1, ?)",
+        await query(
+            "INSERT INTO cart_items (item_id, quantity, user_id) VALUES ($1, 1, $2)",
             [item_id, userId]
         );
     }
@@ -33,7 +33,7 @@ router.post("/add", auth, async (req, res) => {
 router.get("/", auth, async (req, res) => {
     const userId = req.user.userId;
 
-    const [rows] = await db.query(`
+    const result = await query(`
         SELECT 
             c.id,
             f.name,
@@ -44,7 +44,7 @@ router.get("/", auth, async (req, res) => {
         WHERE c.user_id = ?
     `, [userId]);
 
-    res.json(rows);
+    res.json(result.rows);
 });
 
 
@@ -52,8 +52,8 @@ router.get("/", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
     const userId = req.user.userId;
 
-    await db.query(
-        "DELETE FROM cart_items WHERE id = ? AND user_id = ?",
+    await query(
+        "DELETE FROM cart_items WHERE id = $1 AND user_id = $2",
         [req.params.id, userId]
     );
 
@@ -65,8 +65,8 @@ router.post("/increase/:id", auth, async (req, res) => {
     const userId = req.user.userId;
     const cartItemId = req.params.id;
 
-    await db.query(
-        "UPDATE cart_items SET quantity = quantity + 1 WHERE id = ? AND user_id = ?",
+    await query(
+        "UPDATE cart_items SET quantity = quantity + 1 WHERE id = $1 AND user_id = $2",
         [cartItemId, userId]
     );
 
@@ -79,26 +79,26 @@ router.post("/decrease/:id", auth, async (req, res) => {
     const cartItemId = req.params.id;
 
     // check number
-    const [rows] = await db.query(
-        "SELECT quantity FROM cart_items WHERE id = ? AND user_id = ?",
+    const result = await query(
+        "SELECT quantity FROM cart_items WHERE id = $1 AND user_id = $2",
         [cartItemId, userId]
     );
 
-    if (rows.length === 0) {
+    if (result.rows.length === 0) {
         return res.status(404).json({ message: "not found" });
     }
 
-    const qty = rows[0].quantity;
+    const qty = result.rows[0].quantity;
 
     if (qty <= 1) {
         // if just one → delete
-        await db.query(
-            "DELETE FROM cart_items WHERE id = ? AND user_id = ?",
+        await query(
+            "DELETE FROM cart_items WHERE id = $1 AND user_id = $2",
             [cartItemId, userId]
         );
     } else {
-        await db.query(
-            "UPDATE cart_items SET quantity = quantity - 1 WHERE id = ? AND user_id = ?",
+        await query(
+            "UPDATE cart_items SET quantity = quantity - 1 WHERE id = $1 AND user_id = $2",
             [cartItemId, userId]
         );
     }

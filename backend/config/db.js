@@ -1,17 +1,27 @@
-const mysql = require("mysql2/promise");
+require('dotenv').config()
+const {Pool} = require('pg');
 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
+const pool = new Pool({
     user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME_USER,
-    port: process.env.DB_PORT || 3306,
+    port: process.env.DB_PORT,
     ssl: {
         rejectUnauthorized: false
-    },
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+    }
+})
 
-module.exports = pool;
+const query = (sql, values = []) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await pool.query(sql, values)
+            resolve(result)
+        } catch(error) {
+            console.error("Database Query Error:", error);
+            reject(error.message)
+        }
+    })
+}
+
+module.exports = {query};

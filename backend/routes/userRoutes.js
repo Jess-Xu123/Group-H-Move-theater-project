@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 
-const db = require("../config/db");
+const { query } = require("../config/db");
 const { hashPassword, comparePassword } = require("../utils/hash");
 
 const SECRET_KEY = process.env.JWT_SECRET;
@@ -14,13 +14,13 @@ router.post("/register", async (req, res) => {
         if (!username || !email || !password) {
             return res.json({ code: 1, message: "please fill all information" });
         }
-        const [results] = await db.query(
-            "SELECT * FROM users WHERE username = ? OR email = ?",
+        const result = await query(
+            "SELECT * FROM users WHERE username = $1 OR email = $2",
             [username, email]
         );
 
-        if (results.length > 0) {
-            const existing = results[0];
+        if (result.rows.length > 0) {
+            const existing = result.rows[0]
 
             if (existing.username === username) {
                 return res.json({ code: 1, message: "username already exists" });
@@ -33,8 +33,8 @@ router.post("/register", async (req, res) => {
 
         const hashedPassword = await hashPassword(password);
 
-        await db.query(
-            "INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+        await query(
+            "INSERT INTO users (username, password, email) VALUES ($1, $2, $3)",
             [username, hashedPassword, email]
         );
 
@@ -49,15 +49,16 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     try {
         const { username, password } = req.body;
-        const [results] = await db.query(
-            "SELECT * FROM users WHERE username = ? OR email = ?",
+
+        const result = await query(
+            "SELECT * FROM users WHERE username = $1 OR email = $2",
             [username, username]
         );
-        if (results.length === 0) {
+        if (result.rows.length === 0) {
             return res.json({ code: 1, message: "user does not exist" });
         }
 
-        const user = results[0];
+        const user = result.rows[0];
         const match = await comparePassword(password, user.password);
 
         if (!match) {
@@ -88,18 +89,18 @@ router.post("/login", async (req, res) => {
 // get userinfo（need token
 router.get("/userinfo", auth, async (req, res) => {
     try {
-        const [results] = await db.query(
+        const result = await query(
             "SELECT username, email FROM users WHERE id = ?",
             [req.user.userId]
         );
 
-        if (results.length === 0) {
+        if (result.rows.length === 0) {
             return res.status(404).json({ code: 1, message: "user not found" });
         }
 
         res.json({
             code: 0,
-            data: results[0]
+            data: result.rows[0]
         });
 
     } catch (err) {
@@ -112,8 +113,8 @@ router.post("/update", auth, async (req, res) => {
     try {
         const { username, email } = req.body;
 
-        await db.query(
-            "UPDATE users SET username = ?, email = ? WHERE id = ?",
+        await query(
+            "UPDATE users SET username = $1, email = $2 WHERE id = $3",
             [username, email, req.user.userId]
         );
 

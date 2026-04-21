@@ -1,8 +1,6 @@
-CREATE DATABASE users_system;
-USE users_system;
 -- 1. Create Users (AUTO_INCREMENT => SERIAL)
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100),
@@ -11,7 +9,7 @@ CREATE TABLE users (
 
 -- 2. Product table (Serial tickets, gift cards)
 CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     category VARCHAR(50) NOT NULL,
     price DECIMAL(10,2) NOT NULL,
@@ -31,24 +29,24 @@ INSERT INTO products (name, category, price, description) VALUES
 
 -- 3. Events table 
 CREATE TABLE event_types (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
     base_price DECIMAL(10,2)
 );
 
 CREATE TABLE event_schedule (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     event_type_id INT,
     event_date DATE NOT NULL,
     start_time TIME NOT NULL,
     available_slots INT DEFAULT 1,
-    is_special_event TINYINT DEFAULT 0,
+    is_special_event BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (event_type_id) REFERENCES event_types(id)
 );
 
 CREATE TABLE event_bookings (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     schedule_id INT,
     user_email VARCHAR(255),
     booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -58,7 +56,7 @@ CREATE TABLE event_bookings (
 
 -- 4. Movies table 
 CREATE TABLE movies (
-    movie_id INT AUTO_INCREMENT PRIMARY KEY,
+    movie_id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
     genre VARCHAR(100),
@@ -72,14 +70,14 @@ CREATE TABLE movies (
 
 -- 5. Halls table 
 CREATE TABLE halls (
-    hall_id INT AUTO_INCREMENT PRIMARY KEY,
+    hall_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     capacity INT NOT NULL
 );
 
 -- 6. Showtimes table 
 CREATE TABLE showtimes (
-    showtime_id INT AUTO_INCREMENT PRIMARY KEY,
+    showtime_id SERIAL PRIMARY KEY,
     movie_id INT NOT NULL,
     hall_id INT NOT NULL,
     show_date DATE NOT NULL,
@@ -91,7 +89,7 @@ CREATE TABLE showtimes (
 );
 
 CREATE TABLE bookings (
-    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id SERIAL PRIMARY KEY,
     showtime_id INT NOT NULL,
     customer_name VARCHAR(100),
     customer_email VARCHAR(255) NOT NULL,
@@ -104,7 +102,7 @@ CREATE TABLE bookings (
 
 -- 7. Foods table 
 CREATE TABLE food_items (
-    food_id INT AUTO_INCREMENT PRIMARY KEY,
+    food_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
     price DECIMAL(6,2) NOT NULL,
@@ -307,11 +305,10 @@ INSERT INTO event_schedule (event_type_id, event_date, start_time, available_slo
 (2, '2026-08-15', '19:30:00', 50, TRUE), 
 (2, '2026-08-16', '19:30:00', 50, TRUE);
 
+-- 8. Carts table 
 DROP TABLE IF EXISTS cart_items;
-
--- 7. Carts table 
 CREATE TABLE cart_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     item_id INT NOT NULL,
     quantity INT DEFAULT 1,
     user_id INT NOT NULL,
