@@ -1,4 +1,4 @@
-export const API_URL_Z = "http://localhost:3000/api";
+export const API_URL_Z = '/api';
 
 // ===== USER =====
 export function getToken() {

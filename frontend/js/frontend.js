@@ -1,4 +1,4 @@
-const API_URL_Z = "http://localhost:3000/api";
+const API_URL_Z = '/api';
 
 window.onload = async () => {
 
