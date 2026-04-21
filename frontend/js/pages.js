@@ -12,6 +12,11 @@ function getCurrentFileName() {
 function initCurrentPage() {
   const currentPage = getCurrentFileName();
 
+  if (currentPage === 'homeScreenX.html' || currentPage === '') {
+    initHomePage();
+    return;
+  }
+
   if (currentPage === 'moviemenuj.html') {
     initMovieMenuPage();
     return;
@@ -55,13 +60,6 @@ function initSideMenu() {
   overlay.addEventListener('click', closeMenu);
 }
 
-function initMovieMenuPage() {
-  const movieGrid = document.getElementById('movieGrid');
-  if (!movieGrid) return;
-
-  loadNowShowingMovies(movieGrid);
-}
-
 async function loadNowShowingMovies(movieGrid) {
   try {
     const response = await fetch(`${API_URL}/movies/now-showing`);
@@ -73,14 +71,16 @@ async function loadNowShowingMovies(movieGrid) {
     const movies = await response.json();
 
     movieGrid.innerHTML = movies.map((movie) => `
-      <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
-        <article class="movie-card">
-          <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster">
-          <h2 class="movie-title">${movie.title}</h2>
-          <p class="movie-time">${movie.genre}</p>
-        </article>
-      </a>
-    `).join('');
+      <div class="col-6 col-md-4 col-lg-2"> 
+    <a href="movieDetailsJ.html?id=${movie.movie_id || movie.id}" class="movie-link">
+      <article class="movie-card">
+        <img src="${movie.poster_url || `assets/movies/${movie.id}.jpg`}" alt="${movie.title} poster" class="movie-poster">
+        <h2 class="movie-title">${movie.title}</h2>
+        <p class="movie-time">${movie.genre}</p>
+      </article>
+    </a>
+  </div>
+`).join('');
   } catch (error) {
     console.error(error);
     movieGrid.innerHTML = '<p class="movie-time">Failed to load movies.</p>';
@@ -435,4 +435,10 @@ async function loadFoods(foodList, drinksList, snacksList, othersList) {
     console.error(error);
     foodList.innerHTML = '<p class="menu-desc">Failed to load menu items.</p>';
   }
+}
+
+function initHomePage() {
+  const movieGrid = document.getElementById('movie-now-shown'); 
+  if (!movieGrid) return;
+  loadNowShowingMovies(movieGrid);
 }
