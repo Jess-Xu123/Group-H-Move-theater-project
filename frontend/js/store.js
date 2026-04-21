@@ -1,10 +1,15 @@
 import { API_URL_Z, getToken } from "./core.js";
 
-export async function initStore() {
-    const res = await fetch(`${API_URL_Z}/store/store-items`);
-    const items = await res.json();
 
-    renderStore(items);
+
+export async function initStore() {
+    try {
+        const res = await fetch(`${API_URL_Z}/store/store-items`);
+        const items = await res.json();
+        renderStore(items);
+    } catch (err) {
+        console.error("Failed to load store items:", err);
+    }
 }
 
 function renderStore(items) {
@@ -21,10 +26,20 @@ function renderStore(items) {
 
     items.forEach(item => {
 
+        const imagePath = `assets/onlineStore/${image.category}.png`;
+        const defaultImage = 'assets/onlineStore/serialticket.png';
+
         const card = `
             <div class="store-card" onclick="addToCart(${item.id})">
-                <div class="img"></div>
-                <p>${item.name}</p>
+                <div class="img-container">
+                    <img src="${imagePath}" onerror="this.src='${defaultImage}'" alt="${item.name}">
+                </div>
+                <div class="store-card-info">
+                    <p class="item-name">${item.name}</p>
+                    <p class="item-desc">${item.description || ''}</p>
+                    <p class="item-price">${item.price} €</p>
+                    <button class="buy-btn">Add to Cart</button>
+                </div>
             </div>
         `;
 
