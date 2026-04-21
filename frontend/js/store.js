@@ -1,6 +1,8 @@
 import { API_URL_Z, getToken } from "./core.js";
 
-
+window.addToCart = (id) => {
+    console.log("Item clicked, ID:", id);
+};
 
 export async function initStore() {
     try {
@@ -26,8 +28,8 @@ function renderStore(items) {
 
     items.forEach(item => {
 
-        const imagePath = `assets/onlineStore/${item.category}.png`;
-        const defaultImage = 'assets/onlineStore/serialticket.png';
+        const imagePath = `/assets/onlineStore/${item.category}.png`;
+        const defaultImage = '/assets/onlineStore/serialticket.png';
 
         const card = `
             <div class="store-card" onclick="addToCart(${item.id})">
