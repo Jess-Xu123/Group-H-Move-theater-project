@@ -26,7 +26,7 @@ function renderStore(items) {
 
     items.forEach(item => {
 
-        const imagePath = `assets/onlineStore/${image.category}.png`;
+        const imagePath = `assets/onlineStore/${item.category}.png`;
         const defaultImage = 'assets/onlineStore/serialticket.png';
 
         const card = `
