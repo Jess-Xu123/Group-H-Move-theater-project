@@ -1,4 +1,10 @@
-export const API_URL_Z = '/api';
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+export const API_URL_Z = isLocal 
+    ? 'http://localhost:8080/api' 
+    : 'https://move-theater-project-api.onrender.com/api';
+
+
+//export const API_URL_Z = '/api';
 
 // ===== USER =====
 export function getToken() {

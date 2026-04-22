@@ -30,7 +30,7 @@ export function initRegister() {
 
         if (data.code === 0) {
             alert("success");
-            window.location.href = "loginZ.html";
+            window.location.href = "/loginZ.html";
         }
     });
 }
@@ -55,7 +55,7 @@ export function initLogin() {
 
         if (data.code === 0) {
             setUser(data);
-            window.location.href = "accountZ.html";
+            window.location.href = "/accountZ.html";
         }
     };
 }
@@ -68,9 +68,9 @@ export function initNavbar() {
     if (userIcon) {
         userIcon.addEventListener("click", () => {
             if (getToken()) {
-                window.location.href = "accountZ.html";
+                window.location.href = "/accountZ.html";
             } else {
-                window.location.href = "loginZ.html";
+                window.location.href = "/loginZ.html";
             }
         });
     }
@@ -85,7 +85,7 @@ export function initLogout() {
         if (!confirm("logout?")) return;
 
         clearUser();
-        window.location.href = "loginZ.html";
+        window.location.href = "/loginZ.html";
     });
 }
 
