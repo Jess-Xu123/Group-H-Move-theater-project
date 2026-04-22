@@ -115,7 +115,7 @@
 </div>
 </footer>
 
-
+<script type="module" src="./js/main.js"></script>
 <script>
 
 // SIDE MENU TOGGLE
@@ -245,16 +245,33 @@ document.querySelectorAll('.menu-tab').forEach(tab => {
 loadFoods('Food');
 
 function addToCart(id) {
-  console.log("FRONT ID:", id);
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        alert("please login first");
+        return;
+    }
+
     fetch("/api/cart/add", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ item_id: id })
     })
-    .then(res => res.json())
-    .then(() => alert("Added!"));
+    .then(res => {
+        if (res.status === 401 || res.status === 403) {
+            alert("login expired, please login again");
+            return;
+        }
+        return res.json();
+    })
+    .then(data => {
+    if (data?.message === "added") {
+        alert("Added to cart");
+    }
+    });
 }
 
 </script>
