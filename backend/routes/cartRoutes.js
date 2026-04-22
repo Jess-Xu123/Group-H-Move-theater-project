@@ -41,7 +41,7 @@ router.get("/", auth, async (req, res) => {
             c.quantity
         FROM cart_items c
         JOIN food_items f ON c.item_id = f.food_id
-        WHERE c.user_id = ?
+        WHERE c.user_id = $1
     `, [userId]);
 
     res.json(result.rows);
