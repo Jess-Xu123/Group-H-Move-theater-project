@@ -12,10 +12,10 @@ function getCurrentFileName() {
 function initCurrentPage() {
   const currentPage = getCurrentFileName();
 
-  if (currentPage === 'homeScreenX.html' || currentPage === '') {
+  /*if (currentPage === 'homeScreenX.html' || currentPage === '') {
     initHomePage();
     return;
-  }
+  }*/
 
   if (currentPage === 'moviemenuj.html') {
     initMovieMenuPage();
@@ -437,8 +437,8 @@ async function loadFoods(foodList, drinksList, snacksList, othersList) {
   }
 }
 
-function initHomePage() {
+/*function initHomePage() {
   const movieGrid = document.getElementById('movie-now-shown'); 
   if (!movieGrid) return;
   loadNowShowingMovies(movieGrid);
-}
+}*/
