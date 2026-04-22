@@ -90,7 +90,7 @@ router.post("/login", async (req, res) => {
 router.get("/userinfo", auth, async (req, res) => {
     try {
         const result = await query(
-            "SELECT username, email FROM users WHERE id = ?",
+            "SELECT username, email FROM users WHERE id = $1",
             [req.user.userId]
         );
 

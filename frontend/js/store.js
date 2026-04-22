@@ -1,8 +1,5 @@
 import { API_URL_Z, getToken } from "./core.js";
 
-window.addToCart = (id) => {
-    console.log("Item clicked, ID:", id);
-};
 
 export async function initStore() {
     try {

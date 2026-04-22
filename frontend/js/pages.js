@@ -1,9 +1,14 @@
+const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ? "http://localhost:8080/api"
+  : "/api";
+
 document.addEventListener('DOMContentLoaded', () => {
   initSideMenu();
   initCurrentPage();
 });
 
-const API_URL = '/api';
+//disable for now, get it back later 
+// const API_URL = '/api';
 
 function getCurrentFileName() {
   return window.location.pathname.split('/').pop().toLowerCase();
@@ -11,11 +16,6 @@ function getCurrentFileName() {
 
 function initCurrentPage() {
   const currentPage = getCurrentFileName();
-
-  /*if (currentPage === 'homeScreenX.html' || currentPage === '') {
-    initHomePage();
-    return;
-  }*/
 
   if (currentPage === 'moviemenuj.html') {
     initMovieMenuPage();
@@ -59,6 +59,12 @@ function initSideMenu() {
   closeBtn.addEventListener('click', closeMenu);
   overlay.addEventListener('click', closeMenu);
 }
+function initMovieMenuPage() {
+  const movieGrid = document.getElementById('movieGrid');
+  if (!movieGrid) return;
+
+  loadNowShowingMovies(movieGrid);
+}
 
 async function loadNowShowingMovies(movieGrid) {
   try {
@@ -71,16 +77,14 @@ async function loadNowShowingMovies(movieGrid) {
     const movies = await response.json();
 
     movieGrid.innerHTML = movies.map((movie) => `
-      <div class="col-6 col-md-4 col-lg-2"> 
-    <a href="movieDetailsJ.html?id=${movie.movie_id || movie.id}" class="movie-link">
-      <article class="movie-card">
-        <img src="${movie.poster_url || `assets/movies/${movie.id}.jpg`}" alt="${movie.title} poster" class="movie-poster">
-        <h2 class="movie-title">${movie.title}</h2>
-        <p class="movie-time">${movie.genre}</p>
-      </article>
-    </a>
-  </div>
-`).join('');
+      <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link">
+        <article class="movie-card">
+          <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster">
+          <h2 class="movie-title">${movie.title}</h2>
+          <p class="movie-time">In theaters ${formatReleaseDate(movie.release_date)}</p>
+        </article>
+      </a>
+    `).join('');
   } catch (error) {
     console.error(error);
     movieGrid.innerHTML = '<p class="movie-time">Failed to load movies.</p>';
@@ -285,7 +289,7 @@ async function loadMovieDetails(elements) {
 
     const movie = await movieResponse.json();
 
-    detailPoster.src = movie.poster_url || 'assets/posters/placeholder.png';
+    detailPoster.src = movie.poster_url || 'https://via.placeholder.com/300x450?text=No+Poster';
     detailPoster.alt = `${movie.title} poster`;
 
     const showtimeResponse = await fetch(`${API_URL}/movies/${movieId}/showtimes`);
@@ -315,16 +319,17 @@ async function loadMovieDetails(elements) {
       setHelpMessage(`Selected ${formatShowtimeDate(showtime.show_date)} ${formatShowtimeTime(showtime.show_time)} • ${showtime.hall_name}`);
     });
 
-    buyTicketsBtn.addEventListener('click', () => {
+    buyTicketsBtn.addEventListener('click', async() => {
       if (!selectedShowtime) {
         setHelpMessage('Select a showtime before continuing.');
         return;
       }
-
-      savePendingTicketSelection(movie, selectedShowtime, selectedTicketCount);
-      setHelpMessage(`Selected ${selectedTicketCount} ticket(s) for ${formatShowtimeDate(selectedShowtime.show_date)} ${formatShowtimeTime(selectedShowtime.show_time)} • ${selectedShowtime.hall_name}.`);
-    });
-  } catch (error) {
+    savePendingTicketSelection(movie, selectedShowtime, selectedTicketCount);
+      
+    
+  setHelpMessage(`Selected ${selectedTicketCount} ticket(s) for ${formatShowtimeDate(selectedShowtime.show_date)} ${formatShowtimeTime(selectedShowtime.show_time)} • ${selectedShowtime.hall_name}.`);
+  }); 
+}catch (error) {
     console.error(error);
     detailTitle.textContent = 'Movie not found';
     detailSub.textContent = '';
@@ -437,8 +442,3 @@ async function loadFoods(foodList, drinksList, snacksList, othersList) {
   }
 }
 
-/*function initHomePage() {
-  const movieGrid = document.getElementById('movie-now-shown'); 
-  if (!movieGrid) return;
-  loadNowShowingMovies(movieGrid);
-}*/

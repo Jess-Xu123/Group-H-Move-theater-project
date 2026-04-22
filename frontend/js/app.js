@@ -76,7 +76,6 @@ window.openBookingModal = (id, name) => {
     document.getElementById('selectedScheduleId').value = id;
     document.getElementById('modalEventName').innerText = `Book: ${name}`;
     
-    // 初始化 Bootstrap 模态框并显示
     const myModal = new bootstrap.Modal(modalEl);
     myModal.show();
 };
