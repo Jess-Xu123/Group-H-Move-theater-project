@@ -5,6 +5,7 @@ const auth = require("../middleware/auth");
 
 // add
 router.post("/add", auth, async (req, res) => {
+    console.log("ADD CART:", req.body);
     const { item_id, item_type } = req.body;
     const userId = req.user.userId;
 
