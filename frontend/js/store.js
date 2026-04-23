@@ -37,7 +37,7 @@ function renderStore(items) {
                     <p class="item-name">${item.name}</p>
                     <p class="item-desc">${item.description || ''}</p>
                     <p class="item-price">${item.price} €</p>
-                    <button class="buy-btn add-to-cart-btn" type="button" data-id="${item.id}" data-type="product">Add</button>
+                    <button class="add-to-cart-btn" type="button" data-id="${item.id}" data-type="product">Add to cart</button>
                 </div>
             </div>
         `;
