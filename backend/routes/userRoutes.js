@@ -68,7 +68,7 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign(
             { userId: user.id, username: user.username },
             SECRET_KEY,
-            { expiresIn: process.env.JWT_EXPIRES_IN }
+            { expiresIn: "1h" }
         );
 
         res.json({
