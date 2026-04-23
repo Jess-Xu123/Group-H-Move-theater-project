@@ -143,6 +143,7 @@ function initMovieDetailsPage() {
     decreaseTicketsBtn: document.getElementById('decreaseTickets'),
     increaseTicketsBtn: document.getElementById('increaseTickets'),
     ticketCount: document.getElementById('ticketCount'),
+    ticketTotal: document.getElementById('ticketTotal'),
     buyTicketsBtn: document.getElementById('buyTicketsBtn'),
     ticketSelectionHelp: document.getElementById('ticketSelectionHelp')
   };
@@ -181,6 +182,7 @@ function createShowtimeOption(showtime) {
       data-show-date="${showtime.show_date}"
       data-show-time="${showtime.show_time}"
       data-hall-name="${hall}"
+      data-ticket-price="${showtime.ticket_price}"
     >
       <span class="showtime-main">${date} · ${time} · ${hall}</span>
       <span class="showtime-meta">${format} · ${language}</span>
@@ -190,6 +192,28 @@ function createShowtimeOption(showtime) {
 
 function updateTicketCountDisplay(ticketCountElement, ticketCount) {
   ticketCountElement.textContent = String(ticketCount);
+}
+function formatTicketMoney(value) {
+  return `${Number(value).toFixed(2).replace('.', ',')} €`;
+}
+
+function updateTicketTotalDisplay(ticketTotalElement, selectedShowtime, selectedTicketCount) {
+  if (!ticketTotalElement) return;
+
+  if (!selectedShowtime || selectedShowtime.ticket_price == null) {
+    ticketTotalElement.textContent = '-- €';
+    return;
+  }
+
+  const unitPrice = Number(selectedShowtime.ticket_price);
+
+  if (Number.isNaN(unitPrice)) {
+    ticketTotalElement.textContent = '-- €';
+    return;
+  }
+
+  const total = unitPrice * Number(selectedTicketCount);
+  ticketTotalElement.textContent = formatTicketMoney(total);
 }
 
 function updateBuyButtonState(buyButton, hasSelection) {
@@ -208,7 +232,8 @@ function bindShowtimeSelection(showtimeList, onSelect) {
         showtime_id: Number(button.dataset.showtimeId),
         show_date: button.dataset.showDate,
         show_time: button.dataset.showTime,
-        hall_name: button.dataset.hallName
+        hall_name: button.dataset.hallName,
+        ticket_price: Number(button.dataset.ticketPrice)
       });
     });
   });
@@ -225,7 +250,9 @@ function savePendingTicketSelection(movie, selectedShowtime, ticketCount) {
     show_date: selectedShowtime.show_date,
     show_time: selectedShowtime.show_time,
     hall_name: selectedShowtime.hall_name,
+    ticket_price: Number(selectedShowtime.ticket_price),
     ticket_count: ticketCount,
+    total_price: Number(selectedShowtime.ticket_price) * Number(ticketCount),
     saved_at: new Date().toISOString()
   };
 
@@ -243,6 +270,7 @@ async function loadMovieDetails(elements) {
     decreaseTicketsBtn,
     increaseTicketsBtn,
     ticketCount,
+    ticketTotal,
     buyTicketsBtn,
     ticketSelectionHelp
   } = elements;
@@ -258,17 +286,20 @@ async function loadMovieDetails(elements) {
   };
 
   updateTicketCountDisplay(ticketCount, selectedTicketCount);
+  updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
   updateBuyButtonState(buyTicketsBtn, false);
 
-  decreaseTicketsBtn.addEventListener('click', () => {
-    selectedTicketCount = Math.max(1, selectedTicketCount - 1);
-    updateTicketCountDisplay(ticketCount, selectedTicketCount);
-  });
+decreaseTicketsBtn.addEventListener('click', () => {
+  selectedTicketCount = Math.max(1, selectedTicketCount - 1);
+  updateTicketCountDisplay(ticketCount, selectedTicketCount);
+  updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
+});
 
-  increaseTicketsBtn.addEventListener('click', () => {
-    selectedTicketCount += 1;
-    updateTicketCountDisplay(ticketCount, selectedTicketCount);
-  });
+increaseTicketsBtn.addEventListener('click', () => {
+  selectedTicketCount += 1;
+  updateTicketCountDisplay(ticketCount, selectedTicketCount);
+  updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
+});
 
   if (!movieId) {
     detailTitle.textContent = 'Movie not found';
@@ -316,6 +347,7 @@ async function loadMovieDetails(elements) {
     bindShowtimeSelection(showtimeList, (showtime) => {
       selectedShowtime = showtime;
       updateBuyButtonState(buyTicketsBtn, true);
+      updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
       setHelpMessage(`Selected ${formatShowtimeDate(showtime.show_date)} ${formatShowtimeTime(showtime.show_time)} • ${showtime.hall_name}`);
     });
 
@@ -327,7 +359,7 @@ async function loadMovieDetails(elements) {
     savePendingTicketSelection(movie, selectedShowtime, selectedTicketCount);
       
     
-  setHelpMessage(`Selected ${selectedTicketCount} ticket(s) for ${formatShowtimeDate(selectedShowtime.show_date)} ${formatShowtimeTime(selectedShowtime.show_time)} • ${selectedShowtime.hall_name}.`);
+  setHelpMessage(`Selected ${selectedTicketCount} ticket(s) for ${formatShowtimeDate(selectedShowtime.show_date)} ${formatShowtimeTime(selectedShowtime.show_time)} • ${selectedShowtime.hall_name}. Total ${formatTicketMoney(Number(selectedShowtime.ticket_price) * selectedTicketCount)}.`);
   }); 
 }catch (error) {
     console.error(error);

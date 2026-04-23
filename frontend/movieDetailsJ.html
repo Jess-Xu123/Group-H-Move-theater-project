@@ -13,133 +13,143 @@
 <body class="main-bg text-white">
 <!-- TOP NAV -->
 <nav class="navbar navbar-dark px-3 py-2">
-    <div class="container-fluid p-0">
-        <a href="homeScreenX.html" class="navbar-brand fw-bold">
-            <img src="./assets/logo.png" alt="Cinema Logo" id="navbar-logo" style="height: 40px; width: auto; margin-right: 10px;">
-            <span></span>
-        </a>
-   <div class="d-flex align-items-center gap-3">
-            <span class="lang-text">EN/FI</span>
-            <i class="bi bi-search fs-5"></i>
-            <a href="loginZ.html" class="text-white">
-            <i class="bi bi-person fs-4"></i>
-            </a>
-            <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
-        </div>
+  <div class="container-fluid p-0">
+    <a href="homeScreenX.html" class="navbar-brand fw-bold">
+      <img src="./assets/logo.png" alt="Cinema Logo" id="navbar-logo" style="height: 40px; width: auto; margin-right: 10px;">
+      <span></span>
+    </a>
+
+    <div class="d-flex align-items-center gap-3">
+      <span class="lang-text">EN/FI</span>
+      <i class="bi bi-search fs-5"></i>
+      <a href="loginZ.html" class="text-white">
+        <i class="bi bi-person fs-4"></i>
+      </a>
+      <i class="bi bi-list fs-3" id="menuToggle" style="cursor:pointer;"></i>
     </div>
+  </div>
 </nav>
 
 <!-- SIDE MENU -->
- <div id="sideMenu" class="side-menu-container">
-    <div class="menu-content">
-        <div class="text-end mb-4">
-            <i class="bi bi-x-lg fs-3 text-white" id="menuClose" style="cursor:pointer;"></i>
-        </div>
-        
-        <ul class="menu-list">
-            <li><a href="movieMenuJ.html"><i class="bi bi-film"></i> Movies</a></li>
-            <li><a href="foodMenuJ.html"><i class="bi bi-cup-straw"></i> Snacks and drinks</a></li>
-            <li><a href="storeZ.html"><i class="bi bi-shop"></i> Online store</a></li>
-            <li><a href="eventScreenX.html"><i class="bi bi-calendar-event"></i> Events</a></li>
-            <li><a href="shoppingCartX.html" class="active"><i class="bi bi-cart3"></i> Shopping cart</a></li>
-        </ul>
+<div id="sideMenu" class="side-menu-container">
+  <div class="menu-content">
+    <div class="text-end mb-4">
+      <i class="bi bi-x-lg fs-3 text-white" id="menuClose" style="cursor:pointer;"></i>
     </div>
+
+    <ul class="menu-list">
+      <li><a href="movieMenuJ.html"><i class="bi bi-film"></i> Movies</a></li>
+      <li><a href="foodMenuJ.html"><i class="bi bi-cup-straw"></i> Snacks and drinks</a></li>
+      <li><a href="storeZ.html"><i class="bi bi-shop"></i> Online store</a></li>
+      <li><a href="eventScreenX.html"><i class="bi bi-calendar-event"></i> Events</a></li>
+      <li><a href="shoppingCartX.html" class="active"><i class="bi bi-cart3"></i> Shopping cart</a></li>
+    </ul>
+  </div>
 </div>
 
 <div id="menuOverlay" class="menu-overlay"></div>
 
 <!-- MOVIE DETAILS PAGE -->
-  <main class="movie-page">
-    <nav class="movie-tabs" aria-label="Movie categories">
-      <a href="movieMenuJ.html" class="movie-tab active">Now Showing</a>
-      <a href="upcomingMenuJ.html" class="movie-tab">Upcoming</a>
-    </nav>
+<main class="movie-page">
+  <nav class="movie-tabs" aria-label="Movie categories">
+    <a href="movieMenuJ.html" class="movie-tab active">Now Showing</a>
+    <a href="upcomingMenuJ.html" class="movie-tab">Upcoming</a>
+  </nav>
 
-    <section class="details-content" aria-label="Movie details">
-      <article class="movie-detail-card">
-        <div class="poster-wrap">
-          <img
-            id="detailPoster"
-            class="detail-poster-placeholder"
-            src="https://via.placeholder.com/300x450?text=No+Poster"
-            alt="Movie poster"
-          >
+  <section class="details-content" aria-label="Movie details">
+    <article class="movie-detail-card">
+      <div class="poster-wrap">
+        <img
+          id="detailPoster"
+          class="detail-poster-placeholder"
+          src="https://via.placeholder.com/300x450?text=No+Poster"
+          alt="Movie poster"
+        >
+      </div>
+
+      <div class="detail-info-row">
+        <div class="detail-info">
+          <h2 class="detail-title" id="detailTitle">Movie name</h2>
+          <p class="detail-sub" id="detailSub">Genre • 2h 00min</p>
+        </div>
+        <div class="age-badge" id="ageBadge" aria-label="Age rating">7</div>
+      </div>
+
+      <div class="movie-description">
+        <h3 class="movie-description-title">About the movie</h3>
+        <p class="movie-description-text" id="detailDescription">
+          Add the movie description here. This area is for a short summary of the movie.
+        </p>
+      </div>
+
+      <section class="ticket-booking-section" aria-label="Ticket booking">
+        <h3 class="movie-description-title">Choose showtime</h3>
+        <div id="showtimeList" class="showtime-list">
+          <p class="showtime-empty">Loading showtimes...</p>
         </div>
 
-        <div class="detail-info-row">
-          <div class="detail-info">
-            <h2 class="detail-title" id="detailTitle">Movie name</h2>
-            <p class="detail-sub" id="detailSub">Genre • 2h 00min</p>
-          </div>
-          <div class="age-badge" id="ageBadge" aria-label="Age rating">7</div>
-        </div>
+        <div class="ticket-controls">
+          <div class="ticket-quantity-block">
+            <span class="ticket-label">Tickets</span>
 
-        <div class="movie-description">
-          <h3 class="movie-description-title">About the movie</h3>
-          <p class="movie-description-text" id="detailDescription">
-            Add the movie description here. This area is for a short summary of the movie.
-          </p>
-        </div>
-
-        <section class="ticket-booking-section" aria-label="Ticket booking">
-          <h3 class="movie-description-title">Choose showtime</h3>
-          <div id="showtimeList" class="showtime-list">
-            <p class="showtime-empty">Loading showtimes...</p>
-          </div>
-
-          <div class="ticket-controls">
-            <div class="ticket-quantity-block">
-              <span class="ticket-label">Tickets</span>
+            <div class="ticket-stepper-row">
               <div class="ticket-stepper" aria-label="Ticket amount selector">
                 <button type="button" class="ticket-stepper-btn" id="decreaseTickets" aria-label="Decrease ticket count">−</button>
                 <span class="ticket-count" id="ticketCount">1</span>
                 <button type="button" class="ticket-stepper-btn" id="increaseTickets" aria-label="Increase ticket count">+</button>
               </div>
-            </div>
 
-            <button type="button" class="buy-btn" id="buyTicketsBtn" disabled>Buy tickets</button>
+              <div class="ticket-total-box" aria-label="Ticket total">
+                <span class="ticket-total-label">Total</span>
+                <span class="ticket-total-value" id="ticketTotal">-- €</span>
+              </div>
+            </div>
           </div>
 
-          <p class="ticket-selection-help" id="ticketSelectionHelp">Select a showtime to continue.</p>
-        </section>
-      </article>
-    </section>
-  </main>
+          <button type="button" class="buy-btn" id="buyTicketsBtn" disabled>Buy tickets</button>
+        </div>
+
+        <p class="ticket-selection-help" id="ticketSelectionHelp">Select a showtime to continue.</p>
+      </section>
+    </article>
+  </section>
+</main>
 
 <!-- FOOTER -->
 <footer class="footer-section mt-1 px-3 pt-4 pb-5">
-    <div class="row g-4">
-<!-- Contact us -->
-        <div class="col-sm-6 col-md-5">
-            <h6 class="footer-label">Contact us</h6>
-            <div class="footer-detail mt-3">
-                <p><i class="bi bi-geo-alt-fill me-2"></i>Kalliotie 6, 90500, Oulu</p>
-                    <p><i class="bi bi-telephone-fill me-2"></i>08 5542711</p>
-                    <p><i class="bi bi-envelope-fill me-2"></i>booking@elokuvateatterister.com</p>
-                </div>
-            </div>
-<!-- Opening hours -->
-        <div class="col-sm-6 col-md-7">
-            <h6 class="footer-label"><i class="bi bi-clock-fill me-2"></i>Opening hours</h6>
-            <div class="footer-detail mt-3">
-                <div class="opening-row d-flex justify-content-between mb-2">
-                        <span class="text-muted-custom">Monday - Friday</span>
-                        <span class="time-text">10:00 AM - 11:00 PM</span>
-                    </div>
-                    <div class="opening-row d-flex justify-content-between">
-                        <span class="text-muted-custom">Saturday - Sunday</span>
-                        <span class="time-text">09:00 AM - 12:00 AM</span>
-                    </div>
-                </div>
-<!-- Follow us -->
-            <h6 class="footer-label mt-4">Follow us</h6>
-            <div class="d-flex gap-3 mt-2 social-icons">
-                <i class="bi bi-facebook fs-4"></i>
-                <i class="bi bi-instagram fs-4"></i>
-            </div>
-        </div>
+  <div class="row g-4">
+    <!-- Contact us -->
+    <div class="col-sm-6 col-md-5">
+      <h6 class="footer-label">Contact us</h6>
+      <div class="footer-detail mt-3">
+        <p><i class="bi bi-geo-alt-fill me-2"></i>Kalliotie 6, 90500, Oulu</p>
+        <p><i class="bi bi-telephone-fill me-2"></i>08 5542711</p>
+        <p><i class="bi bi-envelope-fill me-2"></i>booking@elokuvateatterister.com</p>
+      </div>
     </div>
-</div>
+
+    <!-- Opening hours -->
+    <div class="col-sm-6 col-md-7">
+      <h6 class="footer-label"><i class="bi bi-clock-fill me-2"></i>Opening hours</h6>
+      <div class="footer-detail mt-3">
+        <div class="opening-row d-flex justify-content-between mb-2">
+          <span class="text-muted-custom">Monday - Friday</span>
+          <span class="time-text">10:00 AM - 11:00 PM</span>
+        </div>
+        <div class="opening-row d-flex justify-content-between">
+          <span class="text-muted-custom">Saturday - Sunday</span>
+          <span class="time-text">09:00 AM - 12:00 AM</span>
+        </div>
+      </div>
+
+      <!-- Follow us -->
+      <h6 class="footer-label mt-4">Follow us</h6>
+      <div class="d-flex gap-3 mt-2 social-icons">
+        <i class="bi bi-facebook fs-4"></i>
+        <i class="bi bi-instagram fs-4"></i>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script src="js/pages.js"></script>
