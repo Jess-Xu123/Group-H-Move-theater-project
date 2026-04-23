@@ -34,9 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
         
         case "store-page":
             initStore();
+            break;
 
         case "event-page":
             initEvents();
+            break;
     }
 
 
@@ -78,5 +80,5 @@ document.addEventListener("DOMContentLoaded", () => {
             `).join('');
         })
         .catch(err => console.error(err)); 
-}
+    }
 });
