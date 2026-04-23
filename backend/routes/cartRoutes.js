@@ -31,46 +31,54 @@ router.post("/add", auth, async (req, res) => {
 
 // get cart
 router.get("/", auth, async (req, res) => {
-    const userId = req.user.userId;
+    try {
+        const userId = req.user.userId;
 
-    const result = await query(`
-        SELECT 
-            c.id,
-            f.name,
-            f.price,
-            c.quantity,
-            c.item_type
-        FROM cart_items c
-        JOIN food_items f ON c.item_id = f.food_id
-        WHERE c.user_id = $1 AND c.item_type = 'food'
+        console.log("GET CART user:", userId);
 
-        UNION ALL
+        const result = await query(`
+            SELECT 
+                c.id,
+                f.name,
+                f.price,
+                c.quantity,
+                c.item_type
+            FROM cart_items c
+            JOIN food_items f ON c.item_id = f.food_id
+            WHERE c.user_id = $1 AND c.item_type = 'food'
 
-        SELECT 
-            c.id,
-            p.name,
-            p.price,
-            c.quantity,
-            c.item_type
-        FROM cart_items c
-        JOIN products p ON c.item_id = p.id
-        WHERE c.user_id = $1 AND c.item_type = 'product'
+            UNION ALL
 
-        UNION ALL
+            SELECT 
+                c.id,
+                p.name,
+                p.price,
+                c.quantity,
+                c.item_type
+            FROM cart_items c
+            JOIN products p ON c.item_id = p.id
+            WHERE c.user_id = $1 AND c.item_type = 'product'
 
-        SELECT 
-            c.id,
-            m.title AS name,
-            s.ticket_price AS price,
-            c.quantity,
-            c.item_type
-        FROM cart_items c
-        JOIN showtimes s ON c.item_id = s.showtime_id
-        JOIN movies m ON s.movie_id = m.movie_id
-        WHERE c.user_id = $1 AND c.item_type = 'ticket'
-    `, [userId]);
+            UNION ALL
 
-    res.json(result.rows);
+            SELECT 
+                c.id,
+                m.title AS name,
+                s.ticket_price AS price,
+                c.quantity,
+                c.item_type
+            FROM cart_items c
+            JOIN showtimes s ON c.item_id = s.showtime_id
+            JOIN movies m ON s.movie_id = m.movie_id
+            WHERE c.user_id = $1 AND c.item_type = 'ticket'
+        `, [userId]);
+
+        res.json(result.rows);
+
+    } catch (err) {
+        console.error("CART ERROR:", err);
+        res.status(500).json({ error: err.message });
+    }
 });
 
 
