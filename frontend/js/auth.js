@@ -37,38 +37,43 @@ export function initRegister() {
 
 import { setUser } from "./core.js";
 
-btn.onclick = async () => {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+export function initLogin() { 
+    const btn = document.getElementById("login-btn");
+    if (!btn) return;
 
-    if (!username || !password) {
-        alert("Please enter username and password");
-        return;
-    }
+    btn.onclick = async () => {
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-    try {
-        const res = await fetch(`${API_URL_Z}/users/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
-
-        const data = await res.json();
-
-        if (data.code !== 0) {
-            alert(data.message); // "user does not exist" / "wrong password"
+        if (!username || !password) {
+            alert("Please enter username and password");
             return;
         }
 
-        alert("login successfully");
-        setUser(data);
-        window.location.href = "/accountZ.html";
+        try {
+            const res = await fetch(`${API_URL_Z}/users/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
 
-    } catch (err) {
-        alert("Server error, please try again later");
-        console.error(err);
-    }
-};
+            const data = await res.json();
+
+            if (data.code !== 0) {
+                alert(data.message); // "user does not exist" / "wrong password"
+                return;
+            }
+
+            alert("login successfully");
+            setUser(data);
+            window.location.href = "/accountZ.html";
+
+        } catch (err) {
+            alert("Server error, please try again later");
+            console.error(err);
+        }
+    };
+}
 
 import { clearUser, getToken } from "./core.js";
 
