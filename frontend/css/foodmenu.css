@@ -90,14 +90,19 @@
 
 .add-to-cart-btn {
   border: none;
-  border-radius: 20px;
-  background: #D14553;
-  color: #ffffff;
-  line-height: 1;
-  text-transform: lowercase;
+  border-radius: 12px;
+  background-color: #D14553;
+  color: white;
+  transition: all 0.2s;
   padding: 4px 12px;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.add-to-cart-btn:hover {
+  transform: translateY(-8px);
+  border-color: #E3B757; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .menu-section h2.menu-heading {
