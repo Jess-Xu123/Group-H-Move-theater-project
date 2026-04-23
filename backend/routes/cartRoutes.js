@@ -55,6 +55,19 @@ router.get("/", auth, async (req, res) => {
         FROM cart_items c
         JOIN products p ON c.item_id = p.id
         WHERE c.user_id = $1 AND c.item_type = 'product'
+
+        UNION ALL
+
+        SELECT 
+            c.id,
+            m.title AS name,
+            s.ticket_price AS price,
+            c.quantity,
+            c.item_type
+        FROM cart_items c
+        JOIN showtimes s ON c.item_id = s.showtime_id
+        JOIN movies m ON s.movie_id = m.movie_id
+        WHERE c.user_id = $1 AND c.item_type = 'ticket'
     `, [userId]);
 
     res.json(result.rows);

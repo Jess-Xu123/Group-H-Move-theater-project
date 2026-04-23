@@ -345,6 +345,11 @@ increaseTicketsBtn.addEventListener('click', () => {
     showtimeList.innerHTML = showtimes.map(createShowtimeOption).join('');
 
     bindShowtimeSelection(showtimeList, (showtime) => {
+
+      //data
+      buyTicketsBtn.dataset.id = showtime.showtime_id;
+      buyTicketsBtn.dataset.type = "ticket";
+
       selectedShowtime = showtime;
       updateBuyButtonState(buyTicketsBtn, true);
       updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
