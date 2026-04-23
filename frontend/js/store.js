@@ -29,7 +29,7 @@ function renderStore(items) {
         const defaultImage = '/assets/onlineStore/serialticket.png';
 
         const card = `
-            <div class="store-card" onclick="addToCart(${item.id})">
+            <div class="store-card">
                 <div class="img-container">
                     <img src="${imagePath}" onerror="this.src='${defaultImage}'" alt="${item.name}">
                 </div>
@@ -37,7 +37,7 @@ function renderStore(items) {
                     <p class="item-name">${item.name}</p>
                     <p class="item-desc">${item.description || ''}</p>
                     <p class="item-price">${item.price} €</p>
-                    <button class="buy-btn">Add to Cart</button>
+                    <button class="add-to-cart-btn" type="button" data-id="${item.id}" data-type="product">Add</button>
                 </div>
             </div>
         `;

@@ -4,6 +4,7 @@ import { initCart } from "./cart.js";
 import { initUI } from "./ui.js";
 import { initEvents } from "./event.js"
 import { initStore } from "./store.js"
+import { addToCart } from "./cartService.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -51,9 +52,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return date.toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short'
-  });
-}
+        });
+    }
 
+    document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".add-to-cart-btn");
+        if (!btn) return;
+
+        const id = btn.dataset.id;
+        const type = btn.dataset.type;
+
+        addToCart(id, type);
+    });
     
     if (movieGrid && (currentPage === 'homescreenx.html' || currentPage === '')) {
         console.log("You are now at homepage, loading movies");
@@ -78,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </a>
             </div>
             `).join('');
-        })
-        .catch(err => console.error(err)); 
-    }
+            })
+            .catch(err => console.error(err)); 
+        }
 });

@@ -317,3 +317,5 @@ CREATE TABLE cart_items (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+ALTER TABLE cart_items ADD COLUMN item_type VARCHAR(20);

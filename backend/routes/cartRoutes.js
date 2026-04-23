@@ -5,23 +5,23 @@ const auth = require("../middleware/auth");
 
 // add
 router.post("/add", auth, async (req, res) => {
-    const { item_id } = req.body;
+    const { item_id, item_type } = req.body;
     const userId = req.user.userId;
 
     const result = await query(
-        "SELECT * FROM cart_items WHERE item_id = $1 AND user_id = $2",
-        [item_id, userId]
+        "SELECT * FROM cart_items WHERE item_id = $1 AND item_type = $2 AND user_id = $3",
+        [item_id, item_type, userId]
     );
 
     if (result.rows.length > 0) {
         await query(
-            "UPDATE cart_items SET quantity = quantity + 1 WHERE item_id = $1 AND user_id = $2",
-            [item_id, userId]
+            "UPDATE cart_items SET quantity = quantity + 1 WHERE item_id = $1 AND item_type = $2 AND user_id = $3",
+            [item_id, item_type, userId]
         );
     } else {
         await query(
-            "INSERT INTO cart_items (item_id, quantity, user_id) VALUES ($1, 1, $2)",
-            [item_id, userId]
+            "INSERT INTO cart_items (item_id, item_type, quantity, user_id) VALUES ($1, $2, 1, $3)",
+            [item_id, item_type, userId]
         );
     }
 
@@ -38,10 +38,23 @@ router.get("/", auth, async (req, res) => {
             c.id,
             f.name,
             f.price,
-            c.quantity
+            c.quantity,
+            c.item_type
         FROM cart_items c
         JOIN food_items f ON c.item_id = f.food_id
-        WHERE c.user_id = $1
+        WHERE c.user_id = $1 AND c.item_type = 'food'
+
+        UNION ALL
+
+        SELECT 
+            c.id,
+            p.name,
+            p.price,
+            c.quantity,
+            c.item_type
+        FROM cart_items c
+        JOIN products p ON c.item_id = p.id
+        WHERE c.user_id = $1 AND c.item_type = 'product'
     `, [userId]);
 
     res.json(result.rows);

@@ -207,7 +207,7 @@ const createItemHtml = (item) => {
         <p class="menu-price">${formatPrice(item.price)}</p>
       </div>
       <div class="menu-action">
-        <button class="add-btn" type="button" onclick="addToCart(${item.food_id})">Add</button>
+        <button class="add-to-cart-btn" type="button" data-id="${item.id}" data-type="food">Add</button>
       </div>
     </article>`;
 }
@@ -252,35 +252,35 @@ document.querySelectorAll('.menu-tab').forEach(tab => {
 // default load Food
 loadFoods('Food');
 
-function addToCart(id) {
-    const token = localStorage.getItem("token");
+// function addToCart(id) {
+//     const token = localStorage.getItem("token");
 
-    if (!token) {
-        alert("please login first");
-        return;
-    }
+//     if (!token) {
+//         alert("please login first");
+//         return;
+//     }
 
-    fetch("/api/cart/add", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ item_id: id })
-    })
-    .then(res => {
-        if (res.status === 401 || res.status === 403) {
-            alert("login expired, please login again");
-            return;
-        }
-        return res.json();
-    })
-    .then(data => {
-    if (data?.message === "added") {
-        alert("Added to cart");
-    }
-    });
-}
+//     fetch("/api/cart/add", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//             "Authorization": `Bearer ${token}`
+//         },
+//         body: JSON.stringify({ item_id: id, item_type: "food"})
+//     })
+//     .then(res => {
+//         if (res.status === 401 || res.status === 403) {
+//             alert("login expired, please login again");
+//             return;
+//         }
+//         return res.json();
+//     })
+//     .then(data => {
+//     if (data?.message === "added") {
+//         alert("Added to cart");
+//     }
+//     });
+// }
 </script>
 </body>
 </html>
