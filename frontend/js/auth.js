@@ -37,14 +37,16 @@ export function initRegister() {
 
 import { setUser } from "./core.js";
 
-export function initLogin() {
-    const btn = document.getElementById("login-btn");
-    if (!btn) return;
+btn.onclick = async () => {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    btn.onclick = async () => {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+    if (!username || !password) {
+        alert("Please enter username and password");
+        return;
+    }
 
+    try {
         const res = await fetch(`${API_URL_Z}/users/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -53,12 +55,20 @@ export function initLogin() {
 
         const data = await res.json();
 
-        if (data.code === 0) {
-            setUser(data);
-            window.location.href = "/accountZ.html";
+        if (data.code !== 0) {
+            alert(data.message); // "user does not exist" / "wrong password"
+            return;
         }
-    };
-}
+
+        alert("login successfully");
+        setUser(data);
+        window.location.href = "/accountZ.html";
+
+    } catch (err) {
+        alert("Server error, please try again later");
+        console.error(err);
+    }
+};
 
 import { clearUser, getToken } from "./core.js";
 
