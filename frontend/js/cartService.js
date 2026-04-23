@@ -8,6 +8,14 @@ export function addToCart(id, type) {
         return;
     }
 
+    console.log("ADD TO CART CLICK:", { id, type });
+
+    if (!id || !type) {
+        console.error("INVALID ADD TO CART DATA", { id, type });
+        alert("Add to cart failed: missing data");
+        return;
+    }
+
     fetch(`${API_URL_Z}/cart/add`, {
         method: "POST",
         headers: {
