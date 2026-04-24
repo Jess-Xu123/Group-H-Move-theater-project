@@ -135,14 +135,36 @@
 }
 
 .showtime-option {
+  position: relative;
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  color: #ffffff;
-  padding: 14px 16px;
   text-align: left;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  padding: 16px 18px 32px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+}
+
+.showtime-main {
+  display: block;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+.showtime-meta {
+  display: block;
+  color: #b8b8c7;
+  font-size: 0.95rem;
+}
+
+.showtime-price {
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #e3b757;
 }
 
 .showtime-option:hover {

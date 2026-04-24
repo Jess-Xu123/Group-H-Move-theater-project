@@ -186,6 +186,7 @@ function createShowtimeOption(showtime) {
     >
       <span class="showtime-main">${date} · ${time} · ${hall}</span>
       <span class="showtime-meta">${format} · ${language}</span>
+      <span class="showtime-price">${formatTicketMoney(showtime.ticket_price)}</span>
     </button>
   `;
 }
