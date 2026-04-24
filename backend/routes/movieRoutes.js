@@ -32,14 +32,51 @@ router.get("/:id", async (req, res) => {
 
 // showtimes
 router.get("/:id/showtimes", async (req, res) => {
-    const result = await query(`
-        SELECT s.*, h.name AS hall_name
-        FROM showtimes s
-        JOIN halls h ON h.hall_id = s.hall_id
-        WHERE s.movie_id = $1
-    `, [req.params.id]);
+    try {
+        const result = await query(`
+            SELECT
+                s.showtime_id,
+                s.movie_id,
+                s.hall_id,
+                s.show_date,
+                s.show_time,
+                s.format,
+                s.language,
+                s.ticket_price,
+                h.name AS hall_name,
+                h.capacity,
+                GREATEST(
+                    h.capacity - COALESCE(SUM(b.ticket_count), 0),
+                    0
+                )::int AS slots_left
+            FROM showtimes s
+            JOIN halls h
+                ON h.hall_id = s.hall_id
+            LEFT JOIN bookings b
+                ON b.showtime_id = s.showtime_id
+                AND b.status = 'confirmed'
+            WHERE s.movie_id = $1
+            GROUP BY
+                s.showtime_id,
+                s.movie_id,
+                s.hall_id,
+                s.show_date,
+                s.show_time,
+                s.format,
+                s.language,
+                s.ticket_price,
+                h.name,
+                h.capacity
+            ORDER BY
+                s.show_date,
+                s.show_time
+        `, [req.params.id]);
 
-    res.json(result.rows);
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Showtimes fetch error:", error);
+        res.status(500).json({ message: "Failed to load showtimes" });
+    }
 });
 
 module.exports = router;

@@ -173,19 +173,24 @@ function createShowtimeOption(showtime) {
   const hall = showtime.hall_name || `Hall ${showtime.hall_id}`;
   const format = showtime.format || 'Standard';
   const language = showtime.language || 'EN';
+  const slotsLeft = Number(showtime.slots_left);
+  const soldOut = slotsLeft <= 0;
 
   return `
     <button
       type="button"
-      class="showtime-option"
+      class="showtime-option ${soldOut ? 'sold-out' : ''}"
       data-showtime-id="${showtime.showtime_id}"
       data-show-date="${showtime.show_date}"
       data-show-time="${showtime.show_time}"
       data-hall-name="${hall}"
       data-ticket-price="${showtime.ticket_price}"
+      data-slots-left="${slotsLeft}"
+      ${soldOut ? 'disabled' : ''}
     >
       <span class="showtime-main">${date} · ${time} · ${hall}</span>
       <span class="showtime-meta">${format} · ${language}</span>
+      <span class="showtime-slots">${soldOut ? 'Sold out' : `${slotsLeft} seats left`}</span>
       <span class="showtime-price">${formatTicketMoney(showtime.ticket_price)}</span>
     </button>
   `;
@@ -226,6 +231,8 @@ function bindShowtimeSelection(showtimeList, onSelect) {
 
   buttons.forEach((button) => {
     button.addEventListener('click', () => {
+      if (button.disabled) return;
+
       buttons.forEach((item) => item.classList.remove('active'));
       button.classList.add('active');
 
@@ -234,7 +241,8 @@ function bindShowtimeSelection(showtimeList, onSelect) {
         show_date: button.dataset.showDate,
         show_time: button.dataset.showTime,
         hall_name: button.dataset.hallName,
-        ticket_price: Number(button.dataset.ticketPrice)
+        ticket_price: Number(button.dataset.ticketPrice),
+        slots_left: Number(button.dataset.slotsLeft)
       });
     });
   });
@@ -297,6 +305,18 @@ decreaseTicketsBtn.addEventListener('click', () => {
 });
 
 increaseTicketsBtn.addEventListener('click', () => {
+  if (!selectedShowtime) {
+    setHelpMessage('Select a showtime before changing ticket amount.');
+    return;
+  }
+
+  const maxTickets = Number(selectedShowtime.slots_left);
+
+  if (selectedTicketCount >= maxTickets) {
+    setHelpMessage(`Only ${maxTickets} seats left for this showtime.`);
+    return;
+  }
+
   selectedTicketCount += 1;
   updateTicketCountDisplay(ticketCount, selectedTicketCount);
   updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
@@ -345,27 +365,38 @@ increaseTicketsBtn.addEventListener('click', () => {
 
     showtimeList.innerHTML = showtimes.map(createShowtimeOption).join('');
 
-    bindShowtimeSelection(showtimeList, (showtime) => {
+bindShowtimeSelection(showtimeList, (showtime) => {
 
-      //data
-      buyTicketsBtn.dataset.id = showtime.showtime_id;
-      buyTicketsBtn.dataset.type = "ticket";
+  //data
+  buyTicketsBtn.dataset.id = showtime.showtime_id;
+  buyTicketsBtn.dataset.type = "ticket";
 
-      selectedShowtime = showtime;
-      updateBuyButtonState(buyTicketsBtn, true);
-      updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
-      setHelpMessage(`Selected ${formatShowtimeDate(showtime.show_date)} ${formatShowtimeTime(showtime.show_time)} • ${showtime.hall_name}`);
-    });
+  selectedShowtime = showtime;
 
-    buyTicketsBtn.addEventListener('click', async() => {
-      if (!selectedShowtime) {
-        setHelpMessage('Select a showtime before continuing.');
-        return;
-      }
+  if (selectedTicketCount > selectedShowtime.slots_left) {
+    selectedTicketCount = selectedShowtime.slots_left;
+  }
+
+  updateTicketCountDisplay(ticketCount, selectedTicketCount);
+  updateBuyButtonState(buyTicketsBtn, selectedShowtime.slots_left > 0);
+  updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
+
+  setHelpMessage(`Selected ${formatShowtimeDate(showtime.show_date)} ${formatShowtimeTime(showtime.show_time)} • ${showtime.hall_name}. ${showtime.slots_left} seats left.`);
+});
+  buyTicketsBtn.addEventListener('click', async () => {
+    if (!selectedShowtime) {
+      setHelpMessage('Select a showtime before continuing.');
+      return;
+    }
+
+    if (selectedTicketCount > Number(selectedShowtime.slots_left)) {
+      setHelpMessage(`Only ${selectedShowtime.slots_left} seats left for this showtime.`);
+      return;
+    }
+
     savePendingTicketSelection(movie, selectedShowtime, selectedTicketCount);
-      
-    
-  setHelpMessage(`Selected ${selectedTicketCount} ticket(s) for ${formatShowtimeDate(selectedShowtime.show_date)} ${formatShowtimeTime(selectedShowtime.show_time)} • ${selectedShowtime.hall_name}. Total ${formatTicketMoney(Number(selectedShowtime.ticket_price) * selectedTicketCount)}.`);
+
+    setHelpMessage(`Selected ${selectedTicketCount} ticket(s) for ${formatShowtimeDate(selectedShowtime.show_date)} ${formatShowtimeTime(selectedShowtime.show_time)} • ${selectedShowtime.hall_name}. Total ${formatTicketMoney(Number(selectedShowtime.ticket_price) * selectedTicketCount)}.`);
   }); 
 }catch (error) {
     console.error(error);
