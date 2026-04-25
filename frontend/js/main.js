@@ -61,8 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const id = btn.dataset.id;
         const type = btn.dataset.type;
+        const quantity = Math.max(1, Number(btn.dataset.quantity) || 1);
 
-        addToCart(id, type);
+        addToCart(id, type, quantity);
     });
     
     if (movieGrid && (currentPage === 'homescreenx.html' || currentPage === '')) {

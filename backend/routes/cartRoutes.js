@@ -5,7 +5,8 @@ const auth = require("../middleware/auth");
 
 // add
 router.post("/add", auth, async (req, res) => {
-    const { item_id, item_type } = req.body;
+    const { item_id, item_type, quantity } = req.body;
+    const safeQuantity = Math.max(1, Number(quantity) || 1);
     const userId = req.user.userId;
 
     const result = await query(
@@ -15,19 +16,18 @@ router.post("/add", auth, async (req, res) => {
 
     if (result.rows.length > 0) {
         await query(
-            "UPDATE cart_items SET quantity = quantity + 1 WHERE item_id = $1 AND item_type = $2 AND user_id = $3",
-            [item_id, item_type, userId]
+            "UPDATE cart_items SET quantity = quantity + $4 WHERE item_id = $1 AND item_type = $2 AND user_id = $3",
+            [item_id, item_type, userId, safeQuantity]
         );
     } else {
         await query(
-            "INSERT INTO cart_items (item_id, item_type, quantity, user_id) VALUES ($1, $2, 1, $3)",
-            [item_id, item_type, userId]
+            "INSERT INTO cart_items (item_id, item_type, quantity, user_id) VALUES ($1, $2, $3, $4)",
+            [item_id, item_type, safeQuantity, userId]
         );
     }
 
     res.json({ message: "added" });
 });
-
 
 // get cart
 router.get("/", auth, async (req, res) => {

@@ -287,40 +287,47 @@ async function loadMovieDetails(elements) {
   const params = new URLSearchParams(window.location.search);
   const movieId = params.get('id');
 
-  let selectedShowtime = null;
-  let selectedTicketCount = 1;
+let selectedShowtime = null;
+let selectedTicketCount = 1;
 
-  const setHelpMessage = (message) => {
-    ticketSelectionHelp.textContent = message;
-  };
+const syncBuyButtonQuantity = () => {
+  buyTicketsBtn.dataset.quantity = String(selectedTicketCount);
+};
+
+const setHelpMessage = (message) => {
+  ticketSelectionHelp.textContent = message;
+};
 
   updateTicketCountDisplay(ticketCount, selectedTicketCount);
   updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
   updateBuyButtonState(buyTicketsBtn, false);
+  syncBuyButtonQuantity();
 
-decreaseTicketsBtn.addEventListener('click', () => {
-  selectedTicketCount = Math.max(1, selectedTicketCount - 1);
-  updateTicketCountDisplay(ticketCount, selectedTicketCount);
-  updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
-});
+  decreaseTicketsBtn.addEventListener('click', () => {
+    selectedTicketCount = Math.max(1, selectedTicketCount - 1);
+    updateTicketCountDisplay(ticketCount, selectedTicketCount);
+    updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
+    syncBuyButtonQuantity();
+  });
 
-increaseTicketsBtn.addEventListener('click', () => {
-  if (!selectedShowtime) {
-    setHelpMessage('Select a showtime before changing ticket amount.');
-    return;
-  }
+  increaseTicketsBtn.addEventListener('click', () => {
+    if (!selectedShowtime) {
+      setHelpMessage('Select a showtime before changing ticket amount.');
+      return;
+    }
 
-  const maxTickets = Number(selectedShowtime.slots_left);
+    const maxTickets = Number(selectedShowtime.slots_left);
 
-  if (selectedTicketCount >= maxTickets) {
-    setHelpMessage(`Only ${maxTickets} seats left for this showtime.`);
-    return;
-  }
+    if (selectedTicketCount >= maxTickets) {
+      setHelpMessage(`Only ${maxTickets} seats left for this showtime.`);
+      return;
+    }
 
-  selectedTicketCount += 1;
-  updateTicketCountDisplay(ticketCount, selectedTicketCount);
-  updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
-});
+    selectedTicketCount += 1;
+    updateTicketCountDisplay(ticketCount, selectedTicketCount);
+    updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
+    syncBuyButtonQuantity();
+  });
 
   if (!movieId) {
     detailTitle.textContent = 'Movie not found';
@@ -365,24 +372,23 @@ increaseTicketsBtn.addEventListener('click', () => {
 
     showtimeList.innerHTML = showtimes.map(createShowtimeOption).join('');
 
-bindShowtimeSelection(showtimeList, (showtime) => {
+    bindShowtimeSelection(showtimeList, (showtime) => {
+      selectedShowtime = showtime;
 
-  //data
-  buyTicketsBtn.dataset.id = showtime.showtime_id;
-  buyTicketsBtn.dataset.type = "ticket";
+      if (selectedTicketCount > selectedShowtime.slots_left) {
+        selectedTicketCount = selectedShowtime.slots_left;
+      }
 
-  selectedShowtime = showtime;
+      buyTicketsBtn.dataset.id = selectedShowtime.showtime_id;
+      buyTicketsBtn.dataset.type = "ticket";
+      syncBuyButtonQuantity();
 
-  if (selectedTicketCount > selectedShowtime.slots_left) {
-    selectedTicketCount = selectedShowtime.slots_left;
-  }
+      updateTicketCountDisplay(ticketCount, selectedTicketCount);
+      updateBuyButtonState(buyTicketsBtn, selectedShowtime.slots_left > 0);
+      updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
 
-  updateTicketCountDisplay(ticketCount, selectedTicketCount);
-  updateBuyButtonState(buyTicketsBtn, selectedShowtime.slots_left > 0);
-  updateTicketTotalDisplay(ticketTotal, selectedShowtime, selectedTicketCount);
-
-  setHelpMessage(`Selected ${formatShowtimeDate(showtime.show_date)} ${formatShowtimeTime(showtime.show_time)} • ${showtime.hall_name}. ${showtime.slots_left} seats left.`);
-});
+      setHelpMessage(`Selected ${formatShowtimeDate(showtime.show_date)} ${formatShowtimeTime(showtime.show_time)} • ${showtime.hall_name}. ${showtime.slots_left} seats left.`);
+    });
   buyTicketsBtn.addEventListener('click', async () => {
     if (!selectedShowtime) {
       setHelpMessage('Select a showtime before continuing.');
@@ -394,7 +400,8 @@ bindShowtimeSelection(showtimeList, (showtime) => {
       return;
     }
 
-    savePendingTicketSelection(movie, selectedShowtime, selectedTicketCount);
+      syncBuyButtonQuantity();
+      savePendingTicketSelection(movie, selectedShowtime, selectedTicketCount);
 
     setHelpMessage(`Selected ${selectedTicketCount} ticket(s) for ${formatShowtimeDate(selectedShowtime.show_date)} ${formatShowtimeTime(selectedShowtime.show_time)} • ${selectedShowtime.hall_name}. Total ${formatTicketMoney(Number(selectedShowtime.ticket_price) * selectedTicketCount)}.`);
   }); 
