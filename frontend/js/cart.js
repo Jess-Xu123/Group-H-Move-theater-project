@@ -29,7 +29,11 @@ function renderCart(data) {
                     <div class="item-info flex-grow-1">
                         <h5 class="text-gold fw-bold">${item.name}</h5>
                         <span class="badge bg-secondary mt-1">
-                            ${item.item_type === "food" ? "Food" : "Store"}
+                            ${item.item_type === "food"
+                                ? "Food"
+                            : item.item_type === "ticket"
+                                ? "Ticket"
+                                : "Store"}
                         </span>
                     </div>
 
