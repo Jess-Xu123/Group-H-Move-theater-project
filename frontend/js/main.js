@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <a href="movieDetailsJ.html?id=${movie.movie_id}" class="movie-link text-decoration-none">
                     <article class="movie-card">
                         <img src="${movie.poster_url}" alt="${movie.title} poster" class="movie-poster img-fluid">
-                        <h2 class="movie-title mt-2 text-white">${movie.title}</h2>
+                        <h2 class="movie-title mt-2">${movie.title}</h2>
                         <p class="movie-time mb-0" style="font-size: 0.8rem; color: #bbb;">
                         In theaters ${formatReleaseDate(movie.release_date)}
                         </p>

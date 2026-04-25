@@ -27,12 +27,18 @@ body {
     margin-right: 10px;
 }
 #navbar-logo {
-    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); 
-    transition: transform 0.3s ease;
+    filter: contrast(1.2) brightness(1.1) drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
+    transition: transform 0.2s ease;
+    margin-left: -20px;
+    mix-blend-mode: screen;
+    background: transparent;
+    object-fit: contain;
+    outline: none;
 }
 
 #navbar-logo:hover {
     transform: scale(1.1);
+    filter: contrast(1.3) brightness(1.2) drop-shadow(0 0 12px rgba(255, 215, 0, 0.6));
 }
 
 /* Hero Banner */
@@ -98,12 +104,11 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 .movie-title {
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 10px 10px 0 10px;
-    margin: 0;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    margin: 12px 12px 4px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #E3B757;
+    line-height: 1.1;
 }
 .movie-time {
     padding: 0 10px 10px 10px;
@@ -116,9 +121,33 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 24px;
-    height: 250px;
+    height: 100%;
     width: 100%;
     margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+.event-link {
+    display: block; 
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+.event-banner-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;        
+    border-radius: 24px;     
+    filter: brightness(0.9);
+    transition: filter 0.3s ease;
+    object-position: center;
+}
+.events-container:hover {
+    border-color: rgba(227, 183, 87, 0.6);
+    box-shadow: 0 0 20px rgba(227, 183, 87, 0.2);
+    transform: translateY(-3px);
+}
+.events-container:hover .event-banner-img {
+    filter: brightness(1.1);
 }
 
 /* Footer*/

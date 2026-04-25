@@ -305,7 +305,9 @@ INSERT INTO event_schedule (event_type_id, event_date, start_time, available_slo
 (1, '2026-08-10', '18:00:00', 1, FALSE), 
 (1, '2026-08-12', '14:00:00', 0, FALSE), 
 (2, '2026-08-15', '19:30:00', 50, TRUE), 
-(2, '2026-08-16', '19:30:00', 50, TRUE);
+(2, '2026-08-16', '19:30:00', 50, TRUE),
+(2, '2026-08-17', '18:00:00', 10, TRUE),
+(2, '2026-08-18', '18:30:00', 5, TRUE);
 
 -- 8. Carts table 
 DROP TABLE IF EXISTS cart_items;

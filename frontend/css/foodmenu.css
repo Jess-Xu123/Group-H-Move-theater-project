@@ -90,13 +90,13 @@
 
 .add-to-cart-btn {
   border: none;
-  border-radius: 12px;
+  border-radius: 50px;
   background-color: #D14553;
   color: white;
   transition: all 0.2s;
-  padding: 4px 12px;
+  padding: 6px 18px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .add-to-cart-btn:hover {

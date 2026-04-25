@@ -46,6 +46,13 @@
     margin-bottom: 20px;
 }
 
+.event-description {
+    color: #ffffff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
 .event-footer {
     display: flex;
     justify-content: space-between;
@@ -60,7 +67,7 @@
 }
 
 .book-btn {
-    background: #d43a4d;
+    background: #D14553;
     color: white;
     border: none;
     padding: 6px 18px;

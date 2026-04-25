@@ -17,6 +17,9 @@ function renderCalendar(events) {
                 </div>
 
                 <h3 class="event-title">${event.name}</h3>
+                <p class="event-description">
+                     ${event.description || 'No description available.'}
+                </p>
 
                 <p class="event-time mb-3">
                     <i class="bi bi-clock"></i>
@@ -48,23 +51,38 @@ export async function initEvents() {
     renderCalendar(events);
 }
 
-// global functions
+
 window.openBookingModal = (id, name) => {
+
     document.getElementById("selectedScheduleId").value = id;
-    document.getElementById("modalEventName").innerText = name;
+    document.getElementById("modalEventName").innerText = `Book Event: ${name}`;
+    
+    const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+    bookingModal.show();
 };
 
 window.confirmBooking = async () => {
-    const token = localStorage.getItem("token");
-
+    const token = localStorage.getItem("token"); 
     const scheduleId = document.getElementById("selectedScheduleId").value;
     const email = document.getElementById("userEmail").value;
 
-    const res = await bookEvent({ scheduleId, email }, token);
+    if (!email) {
+        alert("Please enter your email!");
+        return;
+    }
 
-    const data = await res.json();
-    if (data.success) {
-        alert("Booked!");
-        location.reload();
+    try {
+        const res = await bookEvent({ scheduleId, email }, token);
+        const data = await res.json();
+
+        if (data.success) {
+            alert("Booking Successful!");
+            location.reload(); 
+        } else {
+            alert("Error: " + (data.message || "Failed to book"));
+        }
+    } catch (error) {
+        console.error("Booking error:", error);
+        alert("Network error, please try again.");
     }
 };

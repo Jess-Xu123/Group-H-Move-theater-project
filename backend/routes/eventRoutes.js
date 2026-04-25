@@ -9,6 +9,8 @@ router.get('/event-schedule', async (req, res) => {
             SELECT 
                 s.id, 
                 t.name, 
+                t.description,
+                t.base_price,
                 s.event_date, 
                 s.start_time, 
                 s.available_slots
@@ -30,6 +32,16 @@ router.post('/book-event', async (req, res)=> {
 
 // 1. Insert new booking
     try {
+        const checkSlots = await query('SELECT available_slots FROM event_schedule WHERE id = $1',[scheduleId]);
+
+        if (checkSlots.rows.length === 0) {
+            return res.status(404).json({ success: false, message: "Event not found"});
+        }
+
+        if (checkSlots.rows[0].available_slots <= 0) {
+            return res.status(400).json({ success: false, message: "No slots available!"});
+        }
+
         await query(
         'INSERT INTO event_bookings (schedule_id, user_email) VALUES ($1, $2)',
         [scheduleId, email]
