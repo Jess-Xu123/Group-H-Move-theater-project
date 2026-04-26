@@ -94,9 +94,11 @@
   background-color: #D14553;
   color: white;
   transition: all 0.2s;
-  padding: 6px 18px;
+  padding: 8px 12px;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap !important;
+  min-width: 100px;
 }
 
 .add-to-cart-btn:hover {
